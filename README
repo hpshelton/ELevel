@@ -1,1 +1,6 @@
 ELevel: A desktop-based electronic flash card system
+
+Image icons are in ./images/
+Source files are in ./src/
+Object files are compiled into ./obj/
+ELevel.app will be placed in ./
