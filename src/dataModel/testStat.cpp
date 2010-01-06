@@ -31,7 +31,7 @@ TestStat::TestStat() :
  */
 void TestStat::addIncorrectlyAnsweredCard(int i)
 {
-	if(std::find(this->incorrectlyAnswered.begin(), this->incorrectlyAnswered.end(), i) != this->incorrectlyAnswered.end())
+	if(!this->incorrectlyAnswered.contains(i))
 		this->incorrectlyAnswered.push_back(i);
 }
 

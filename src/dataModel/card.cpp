@@ -5,7 +5,6 @@
  */
 #include "Card.h"
 
-
 /**
  * Instantiates a <code>Card</code>
  */

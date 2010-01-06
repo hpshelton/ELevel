@@ -10,6 +10,8 @@
 #include <time.h>
 #include <algorithm>
 
+#include <QList>
+
 /**
  * Contains statistics for a single test of a {@link Deck}
  *
@@ -24,7 +26,7 @@ protected:
 	/** The number of questions answered correctly in this test */
 	int numCorrect;
 
-	std::vector<int> incorrectlyAnswered;
+	QList<int> incorrectlyAnswered;
 
 	// Date = new Date() sets it to the number of seconds since "epoch"
 	/** The date and time the test began */
@@ -71,7 +73,7 @@ protected:
 	 *
 	 * @return a <code>List</code> of incorrectly answered cards
 	 */
-	std::vector<int> getIncorrectlyAnsweredCards()
+	QList<int> getIncorrectlyAnsweredCards()
 	{
 		return this->incorrectlyAnswered;
 	}

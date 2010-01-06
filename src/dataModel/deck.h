@@ -124,6 +124,14 @@ public:
 	}
 
 	/**
+	 * Returns the {@link Card} with the specified ID
+	 *
+	 * @param id
+	 * @return The card with the specified ID
+	 */
+	Card getCardWithID(int id);
+
+	/**
 	 * Returns the {@link Collection} of {@link Card}s in this <code>Deck</code>
 	 *
 	 * @return the {@link Collection} of {@link Card}s in this <code>Deck</code>

@@ -137,6 +137,22 @@ bool Deck::operator==(Deck other)
 }
 
 /**
+ * Returns the {@link Card} with the specified ID
+ *
+ * @param id
+ * @return The card with the specified ID
+ */
+Card Deck::getCardWithID(int id)
+{
+	foreach(Card c, cards)
+	{
+		if(c.getID() == id)
+			return c;
+	}
+	return NULL;
+}
+
+/**
  * Returns the index of the specified <code>Card</code> in the specified <code>Deck</code>
  *
  * @return an <code>int</code> representing the index of the specified <code>Card</code> in the specified
