@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../images/editCard.png</file>
+        <file>../images/eLevel.png</file>
+        <file>../images/ellipse.png</file>
+        <file>../images/icon.png</file>
+        <file>../images/line.png</file>
+        <file>../images/newCard.png</file>
+        <file>../images/newDeck.png</file>
+        <file>../images/open.png</file>
+        <file>../images/rectangle.png</file>
+        <file>../images/save.png</file>
+        <file>../images/selection.png</file>
+        <file>../images/splash.png</file>
+        <file>../images/test.png</file>
+        <file>../images/text.png</file>
+    </qresource>
+</RCC>
