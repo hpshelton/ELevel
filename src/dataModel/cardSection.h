@@ -10,8 +10,9 @@
 #include <QGraphicsItem>
 #include <QList>
 
-#include "DrawingGraphicsScene.h"
-#include "DrawingGraphicsView.h"
+#include "drawingGraphicsScene.h"
+#include "drawingGraphicsView.h"
+#include "defines.h"
 
 class QPixmap;
 
@@ -40,10 +41,6 @@ private:
 	bool hasTextContent;
 
 public:
-	/** The size of all <code>CardSection</code>s */
-	static const int WIDTH = 400;
-	static const int HEIGHT = 240;
-
 	/**
 	 * Instantiates a <code>CardSection</code>
 	 */

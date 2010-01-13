@@ -3,7 +3,7 @@
  * E-Level
  * December 28, 2009
  */
-#include "Deck.h"
+#include "deck.h"
 
 /**
  * Initialize a <code>Deck</code>
@@ -37,12 +37,10 @@ void Deck::init(QString name)
  * @param c
  *        a {@link Card} to be added to the deck
  */
-void Deck::addCard(Card c)
+void Deck::addCard(Card* c)
 {
 	this->deckHasChanged = true;
-
 	assignValidCardID(c);
-
 	cards.push_back(c);
 }
 
@@ -54,13 +52,11 @@ void Deck::addCard(Card c)
  * @param c
  *        The <code>Card</code> to be added
  */
-void Deck::addCardAtIndex(int i, Card c)
+void Deck::addCardAtIndex(int i, Card* c)
 {
-	assignValidCardID(c);
-
-	this->cards.insert(i, c);
-
 	this->deckHasChanged = true;
+	assignValidCardID(c);
+	this->cards.insert(i, c);
 }
 
 /**
@@ -69,16 +65,15 @@ void Deck::addCardAtIndex(int i, Card c)
  * @param cards
  *        A <code>List</code> of cards to add to this deck
  */
-void Deck::addCards(QList<Card> c)
+void Deck::addCards(QList<Card*> c)
 {
+	this->deckHasChanged = true;
 	int index = 0;
 	while(index < c.size())
 	{
 		assignValidCardID(c[index]);
 		this->cards.append(c[index++]);
 	}
-
-	this->deckHasChanged = true;
 }
 
 /**
@@ -87,27 +82,25 @@ void Deck::addCards(QList<Card> c)
  * @param d
  *        {@link TestStat} to be associated with the deck
  */
-void Deck::addTestStat(TestStat t)
+void Deck::addTestStat(TestStat* t)
 {
-	this->testStats.push_back(t);
 	this->deckHasChanged = true;
+	this->testStats.push_back(t);
 }
 
-void Deck::assignValidCardID(Card c)
+void Deck::assignValidCardID(Card* c)
 {
-	if(c.getID() == -1)
-		c.ID = getUnusedID();
+	if(c->getID() == -1)
+		c->ID = getUnusedID();
 }
 
 /**
  * Removes all {@link Card}s from the <code>Deck</code>
- *
- * @see java.util.Collection#clear()
  */
 void Deck::clearCards()
 {
-	this->cards.clear();
 	this->deckHasChanged = true;
+	this->cards.clear();
 }
 
 /**
@@ -117,8 +110,8 @@ void Deck::clearCards()
  */
 void Deck::clearTestStats()
 {
-	this->testStats.clear();
 	this->deckHasChanged = true;
+	this->testStats.clear();
 }
 
 bool Deck::operator==(Deck other)
@@ -142,25 +135,14 @@ bool Deck::operator==(Deck other)
  * @param id
  * @return The card with the specified ID
  */
-Card Deck::getCardWithID(int id)
+Card* Deck::getCardWithID(int id)
 {
-	foreach(Card c, cards)
+	foreach(Card* c, cards)
 	{
-		if(c.getID() == id)
+		if(c->getID() == id)
 			return c;
 	}
 	return NULL;
-}
-
-/**
- * Returns the index of the specified <code>Card</code> in the specified <code>Deck</code>
- *
- * @return an <code>int</code> representing the index of the specified <code>Card</code> in the specified
- *         <code>Deck</code>, -1 if the <code>Card</code> is not contained in the specified <code>Deck</code>
- */
-int Deck::indexOf(Card c)
-{
-	return this->cards.indexOf(c);
 }
 
 /**
@@ -170,10 +152,10 @@ int Deck::indexOf(Card c)
  *        the {@link Card} to be removed from the <code>Deck</code>, if it is present
  * @see java.util.Collection#remove(Object)
  */
-void Deck::removeCard(Card c)
+void Deck::removeCard(Card* c)
 {
-	this->cards.removeAll(c);
 	this->deckHasChanged = true;
+	this->cards.removeAll(c);
 }
 
 /**
@@ -184,8 +166,8 @@ void Deck::removeCard(Card c)
  */
 void Deck::setDiskLocation(QString d)
 {
-	this->diskLocation = d;
 	this->deckHasChanged = true;
+	this->diskLocation = d;
 }
 
 /**
@@ -196,13 +178,11 @@ void Deck::setDiskLocation(QString d)
  */
 void Deck::setName(QString n)
 {
-	if(!n.isEmpty())
-	{
+	this->deckHasChanged = true;
+	if(n.isEmpty())
 		this->name = "Default Deck";
-	}
 	else
 		this->name = n;
-	this->deckHasChanged = true;
 }
 
 /**
@@ -213,18 +193,17 @@ void Deck::shuffle()
 	if(this->cards.size() <= 1)
 		return;
 
-	QList<Card> reordered;
+	this->deckHasChanged = true;
+	QList<Card*> reordered;
 
 	// Remove a uniformly distributed card from the current card list and add it to a temporary list
 	while(this->cards.size() > 0)
 	{
-		Card c = getCard(std::rand() % this->cards.size());
+		Card* c = getCard(std::rand() % this->cards.size());
 		reordered.push_back(c);
 		removeCard(c);
 	}
-
 	this->cards = reordered;
-	this->deckHasChanged = true;
 }
 
 /**

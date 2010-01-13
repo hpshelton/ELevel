@@ -5,60 +5,64 @@
  */
 #include "mainWindow.h"
 
+MainWindow::MainWindow()
+	:QMainWindow()
+{
+}
+
 /**
  * Initializes a new MainWindow
  */
 MainWindow::MainWindow(QList<QString> open)
+	: QMainWindow()
 {
-	this->state = ViewState.INSTANCE;
+//	bool isFirstDeck = true;
+//	Deck firstDeck;
 
-	bool isFirstDeck = true;
-	Deck firstDeck;
-
-	if(Preferences.getInstance().getValue("OPEN_PREVIOUS") && &open != NULL && open.size() != 0)
-	{
-		foreach(QString s, open)
-		{
-			std::ifstream f;
-			f.open(s, ios::in);
-
-			if(f.is_open())
-			{
-				Deck d = Deck.readFromDisk(s);
-				if(&d != NULL)
-				{
-					this->state.addDeck(d);
-
-					if(isFirstDeck)
-					{
-						firstDeck = d;
-						isFirstDeck = false;
-					}
-				}
-			}
-		}
-
-		if(this->state.getDecks().size() > 0)
-		{
-			Deck currentDeck = this->state.getDecks().at(0);
-			this->state.setCurrentCardAndDeck(currentDeck.getFirstCard(), currentDeck);
-			this->state.setCurrentDeck(currentDeck);
-		}
-	}
+//	if(Preferences.getInstance().getValue("OPEN_PREVIOUS") && &open != NULL && open.size() != 0)
+//	{
+//		foreach(QString s, open)
+//		{
+//			std::ifstream f;
+//			f.open(s, ios::in);
+//
+//			if(f.is_open())
+//			{
+//				Deck d = Deck.readFromDisk(s);
+//				if(&d != NULL)
+//				{
+//					ViewState::Instance()->addDeck(d);
+//
+//					if(isFirstDeck)
+//					{
+//						firstDeck = d;
+//						isFirstDeck = false;
+//					}
+//				}
+//			}
+//		}
+//
+//		if(ViewState::Instance()->getDecks().size() > 0)
+//		{
+//			Deck currentDeck = ViewState::Instance()->getDecks().at(0);
+//			ViewState::Instance()->setCurrentCardAndDeck(currentDeck.getFirstCard(), currentDeck);
+//			ViewState::Instance()->setCurrentDeck(currentDeck);
+//		}
+//	}
 
 	initializeActions();
 	initializeMenuBar();
 	initializeToolBars();
-	toggleActions(null);
-	setupDeckTree();
-	setupCardArea();
+	toggleActions(NULL);
+	//setupDeckTree();
+	//setupCardArea();
 
-	this->state.cardSelectedInTree.connect(this, "toggleActions(Card)");
-
-	if(&firstDeck != NULL)
-	{
-		treeView->selectDeck(firstDeck, NULL);
-	}
+//	ViewState::Instance()->cardSelectedInTree.connect(this, "toggleActions(Card)");
+//
+//	if(&firstDeck != NULL)
+//	{
+//		treeView->selectDeck(firstDeck, NULL);
+//	}
 }
 
 /**
@@ -66,16 +70,16 @@ MainWindow::MainWindow(QList<QString> open)
  */
 void MainWindow::initializeActions()
 {
-	this->newDeckAction = new QAction(QIcon(ELevel.imageLocation + "newDeck.png"), tr("New Deck"), this);
+	this->newDeckAction = new QAction(QIcon(":/images/newDeck.png"), tr("New Deck"), this);
 	this->newDeckAction->setStatusTip(tr("Create a new Deck"));
 	this->newDeckAction->setShortcut(tr("Ctrl+N"));
 	QObject::connect(this->newDeckAction, SIGNAL(triggered()), this, SLOT(newDeck()));
 	actions.push_back(this->newDeckAction);
 
-	this->loadDeckAction = new QAction(QIcon(ELevel.imageLocation + "open.png"), tr("Open"), this);
+	this->loadDeckAction = new QAction(QIcon(":/images/open.png"), tr("Open"), this);
 	this->loadDeckAction->setStatusTip(tr("Open Selected Deck"));
 	this->loadDeckAction->setShortcut(tr("Ctrl+O"));
-	QObject::connect(this->loadDeckAction, SIGNAL(triggered), this, SLOT(openDeck()));
+	QObject::connect(this->loadDeckAction, SIGNAL(triggered()), this, SLOT(openDeck()));
 	actions.push_back(this->loadDeckAction);
 
 	this->closeDeckAction = new QAction(tr("Close Deck"), this);
@@ -85,15 +89,15 @@ void MainWindow::initializeActions()
 
 	this->deleteCardAction = new QAction(tr("Delete Card"), this);
 	this->deleteCardAction->setStatusTip(tr("Delete Selected Card"));
-	QObject::connect(this->deleteCardAction, SIGNAL(triggered()), this, SLOT(removeCurrentCard()));
+	QObject::connect(this->deleteCardAction, SIGNAL(triggered()), ViewState::Instance(), SLOT(removeCurrentCard()));
 	actions.push_back(this->deleteCardAction);
 
 	this->duplicateCardAction = new QAction(tr("Duplicate Card"), this);
 	this->duplicateCardAction->setStatusTip(tr("Duplicate the Selected Card"));
-	QObject::connect(this->duplicateCardAction, SIGNAL(triggered()), this, SLOT(duplicateCard()));
+	QObject::connect(this->duplicateCardAction, SIGNAL(triggered()), ViewState::Instance(), SLOT(duplicateCard()));
 	actions.push_back(this->duplicateCardAction);
 
-	this->saveDeckAction = new QAction(QIcon(ELevel.imageLocation + "save.png"), tr("Save"), this);
+	this->saveDeckAction = new QAction(QIcon(":/images/save.png"), tr("Save"), this);
 	this->saveDeckAction->setStatusTip(tr("Save Selected Deck"));
 	this->saveDeckAction->setShortcut(tr("Ctrl+S"));
 	QObject::connect(this->saveDeckAction, SIGNAL(triggered()), this, SLOT(saveDeck()));
@@ -118,12 +122,12 @@ void MainWindow::initializeActions()
 
 	this->shuffleAction = new QAction(tr("Shuffle"), this);
 	this->shuffleAction->setStatusTip(tr("Shuffle Current Deck"));
-	QObject::connect(this->shuffleAction, SIGNAL(triggered()), this->state, SLOT(shuffleCurrentDeck()));
+	QObject::connect(this->shuffleAction, SIGNAL(triggered()), ViewState::Instance(), SLOT(shuffleCurrentDeck()));
 	actions.push_back(this->shuffleAction);
 
 	this->aboutELevelAction = new QAction(tr("About E-Level"), this);
 	this->aboutELevelAction->setStatusTip(tr("About E-Level"));
-	QObject::connect(this->aboutELevelAction SIGNAL(triggered()), this, SLOT(aboutELevel()));
+	QObject::connect(this->aboutELevelAction, SIGNAL(triggered()), this, SLOT(aboutELevel()));
 	actions.push_back(this->aboutELevelAction);
 
 	this->setPreferencesAction = new QAction(tr("Preferences"), this);
@@ -131,13 +135,13 @@ void MainWindow::initializeActions()
 	QObject::connect(this->setPreferencesAction, SIGNAL(triggered()), this, SLOT(setPreferences()));
 	actions.push_back(this->setPreferencesAction);
 
-	this->newCardAction = new QAction(QIcon(ELevel.imageLocation + "newCard.png"), tr("New Card"), this);
+	this->newCardAction = new QAction(QIcon(":/images/newCard.png"), tr("New Card"), this);
 	this->newCardAction->setStatusTip(tr("Create a new card"));
 	this->newCardAction->setShortcut(tr("Ctrl+Shift+N"));
 	QObject::connect(this->newCardAction, SIGNAL(triggered()), this, SLOT(newCard()));
 	actions.push_back(this->newCardAction);
 
-	this->editCardAction = new QAction(QIcon(ELevel.imageLocation + "editCard.png"), tr("Edit Card"), this);
+	this->editCardAction = new QAction(QIcon(":/images/editCard.png"), tr("Edit Card"), this);
 	this->editCardAction->setStatusTip(tr("Edit this Card"));
 	this->editCardAction->setShortcut(tr("Ctrl+E"));
 	QObject::connect(this->editCardAction, SIGNAL(triggered()), this, SLOT(editCard()));
@@ -148,13 +152,13 @@ void MainWindow::initializeActions()
 	QObject::connect(this->renameCardAction, SIGNAL(triggered()), this, SLOT(renameCard()));
 	actions.push_back(this->renameCardAction);
 
-	this->testDeckAction = new QAction(QIcon(ELevel.imageLocation + "test.png"), tr("Test"), this);
+	this->testDeckAction = new QAction(QIcon(":/images/test.png"), tr("Test"), this);
 	this->testDeckAction->setStatusTip(tr("Test this deck"));
 	QObject::connect(this->testDeckAction, SIGNAL(triggered()), this, SLOT(testCard()));
 	this->testDeckAction->setShortcut(tr("Ctrl+T"));
 	actions.push_back(this->testDeckAction);
 
-	this->eLvlChallengeDeckAction = new QAction(QIcon(ELevel.imageLocation + "eLevel.png"), tr("ElvlChallenge"), this);
+	this->eLvlChallengeDeckAction = new QAction(QIcon(":/images/eLevel.png"), tr("ElvlChallenge"), this);
 	this->eLvlChallengeDeckAction->setStatusTip(tr("ELevel Challenge!!"));
 	QObject::connect(this->eLvlChallengeDeckAction, SIGNAL(triggered()), this, SLOT(eLvlChallenge()));
 	actions.push_back(this->eLvlChallengeDeckAction);
@@ -177,8 +181,7 @@ void MainWindow::initializeActions()
 void MainWindow::initializeMenuBar()
 {
 	this->menuBar = new QMenuBar();
-
-	QMenu* fileMenu = menuBar.addMenu(tr("&File"));
+	QMenu* fileMenu = menuBar->addMenu(tr("&File"));
 
 	fileMenu->addAction(newDeckAction);
 	fileMenu->addAction(loadDeckAction);
@@ -188,7 +191,7 @@ void MainWindow::initializeMenuBar()
 	fileMenu->addSeparator();
 	fileMenu->addAction(exitAction);
 
-	QMenu* deckMenu = menuBar.addMenu(tr("&Deck"));
+	QMenu* deckMenu = menuBar->addMenu(tr("&Deck"));
 	deckMenu->addAction(testDeckAction);
 	deckMenu->addAction(eLvlChallengeDeckAction);
 	deckMenu->addAction(renameDeckAction);
@@ -196,14 +199,14 @@ void MainWindow::initializeMenuBar()
 	deckMenu->addAction(closeDeckAction);
 	deckMenu->addAction(graphAction);
 
-	QMenu* cardMenu = menuBar.addMenu(tr("&Card"));
+	QMenu* cardMenu = menuBar->addMenu(tr("&Card"));
 	cardMenu->addAction(newCardAction);
 	cardMenu->addAction(editCardAction);
 	cardMenu->addAction(deleteCardAction);
 	cardMenu->addAction(renameCardAction);
 	cardMenu->addAction(duplicateCardAction);
 
-	QMenu* helpMenu = menuBar.addMenu(tr("&Help"));
+	QMenu* helpMenu = menuBar->addMenu(tr("&Help"));
 	helpMenu->addAction(setPreferencesAction);
 	helpMenu->addAction(aboutELevelAction);
 
@@ -216,13 +219,13 @@ void MainWindow::initializeMenuBar()
 void MainWindow::initializeToolBars()
 {
 	this->fileToolbar = addToolBar(tr("File"));
-	this->fileToolbar->setToolButtonStyle(ToolButtonStyle.ToolButtonTextUnderIcon);
+	this->fileToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 	this->fileToolbar->addAction(newDeckAction);
 	this->fileToolbar->addAction(loadDeckAction);
 	this->fileToolbar->addAction(saveDeckAction);
 
 	this->deckToolbar = addToolBar(tr("Deck"));
-	this->deckToolbar->setToolButtonStyle(ToolButtonStyle.ToolButtonTextUnderIcon);
+	this->deckToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 	this->deckToolbar->addAction(newCardAction);
 	this->deckToolbar->addAction(editCardAction);
 	this->deckToolbar->addAction(testDeckAction);
@@ -235,18 +238,18 @@ void MainWindow::initializeToolBars()
  *
  * @param currentCard
  */
-void MainWindow::toggleActions(Card currentCard)
+void MainWindow::toggleActions(Card* currentCard)
 {
 	// TODO - HPS: enable more actions even if deck has no cards
 	bool deckEnabled = true;
 	bool cardEnabled = true;
 
-	if(this->state.getNumDecks() == 0)
+	if(ViewState::Instance()->getNumDecks() == 0)
 	{
 		cardEnabled = false;
 		deckEnabled = false;
 	}
-	else if(this->state.getNumDecks() == 1 && this->state.getCurrentDeck().numCards() == 0)
+	else if(ViewState::Instance()->getNumDecks() == 1 && ViewState::Instance()->getCurrentDeck()->numCards() == 0)
 	{
 		deckEnabled = false;
 	}
@@ -266,7 +269,7 @@ void MainWindow::toggleActions(Card currentCard)
 	newCardAction->setEnabled(cardEnabled);
 	closeDeckAction->setEnabled(cardEnabled);
 
-	if(&currentCard == NULL)
+	if(currentCard == NULL)
 	{
 		editCardAction->setEnabled(false);
 		deleteCardAction->setEnabled(false);
@@ -275,46 +278,45 @@ void MainWindow::toggleActions(Card currentCard)
 	}
 }
 
-/**
- * Sets up the basic tree view of the {@link Deck}s using the {@link DeckTreeModel}
- */
-void MainWindow::setupDeckTree()
-{
-	treeModel = new DeckTreeModel();
-	treeView = new DeckTreeGUI(treeModel);
-	treeView->setModel(treeModel);
-	treeView->setActions(actions);
-	if(this->state.getCurrentDeck() != NULL)
-		treeView->setCurrentIndex(treeModel->valueToIndex(this->state.getCurrentDeck()));
-	treeView->setMinimumWidth(200);
-	treeModel->setView(treeView);
+///**
+// * Sets up the basic tree view of the {@link Deck}s using the {@link DeckTreeModel}
+// */
+//void MainWindow::setupDeckTree()
+//{
+//	treeModel = new DeckTreeModel();
+//	treeView = new DeckTreeGUI(treeModel);
+//	treeView->setModel(treeModel);
+//	treeView->setActions(actions);
+//	if(ViewState::Instance()->getCurrentDeck() != NULL)
+//		treeView->setCurrentIndex(treeModel->valueToIndex(ViewState::Instance()->getCurrentDeck()));
+//	treeView->setMinimumWidth(200);
+//	treeModel->setView(treeView);
+//
+//	dockTreeWidget = new QDockWidget(tr("Decks"), this);
+//	dockTreeWidget->setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures);
+//	dockTreeWidget->setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea);
+//	dockTreeWidget->setWidget(treeView);
+//	this->addDockWidget(Qt::LeftDockWidgetArea, dockTreeWidget);
+//}
 
-	dockTreeWidget = new QDockWidget(tr("Decks"), this);
-	dockTreeWidget->setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures);
-	dockTreeWidget->setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea);
-	dockTreeWidget->setWidget(treeView);
-	this->addDockWidget(Qt::LeftDockWidgetArea, dockTreeWidget);
-}
-
-/**
- * Sets up the tree view of the {@link Card}s under the currently selected Deck using {@link CardAreaGUI}
- */
-void MainWindow::setupCardArea()
-{
-	Deck currentDeck = this->state.getCurrentDeck();
-	if(&currentDeck != NULL && currentDeck.numCards() > 0)
-		this->state.setCurrentCardAndDeck(currentDeck.getFirstCard(), currentDeck);
-	this.cardArea = new CardAreaGUI(this);
-	this->setCentralWidget(cardArea);
-}
+///**
+// * Sets up the tree view of the {@link Card}s under the currently selected Deck using {@link CardAreaGUI}
+// */
+//void MainWindow::setupCardArea()
+//{
+//	Deck currentDeck = ViewState::Instance()->getCurrentDeck();
+//	if(&currentDeck != NULL && currentDeck.numCards() > 0)
+//		ViewState::Instance()->setCurrentCardAndDeck(currentDeck.getFirstCard(), currentDeck);
+//	this.cardArea = new CardAreaGUI(this);
+//	this->setCentralWidget(cardArea);
+//}
 
 /**
  * Displays an information box about the program
  */
 void MainWindow::aboutELevel()
 {
-	QMessageBox msgBox(QMessageBox::about, tr("About E-Level"), tr("<b>Version 0.7</b><br><br>" + "<b>Written by:</b><br>H. Parker Shelton - web \"development\", resident Qt \"expert\"<br>" + "Jesse Yates - the wild card<br>" + "Greg Anderson - algorithmic and concept design<br>" + "Pablo Lee - misc.<br>" + "Elaine Zapata - (GUI and group) beautification, model and code review<br>"));
-	msgBox.exec();
+	QMessageBox::about(this, tr("About E-Level"), tr("<b>Version 0.7</b><br><br><b>Written by:</b><br>H. Parker Shelton - web \"development\", resident Qt \"expert\"<br>Jesse Yates - the wild card<br>Greg Anderson - algorithmic and concept design<br>Pablo Lee - misc.<br>"));
 }
 
 /**
@@ -322,11 +324,11 @@ void MainWindow::aboutELevel()
  */
 void MainWindow::newDeck()
 {
-	DeckDialog* open = new DeckDialog(this);
-	open->setWindowTitle("New Deck");
-	open->setWindowIcon(this->windowIcon());
-	QObject::connect(open, SIGNAL(closing), this->state, SLOT(addDeck(Deck)));
-	open->show();
+//	DeckDialog* open = new DeckDialog(this);
+//	open->setWindowTitle("New Deck");
+//	open->setWindowIcon(this->windowIcon());
+//	QObject::connect(open, SIGNAL(closing), ViewState::Instance(), SLOT(addDeck(Deck)));
+//	open->show();
 }
 
 /**
@@ -334,13 +336,13 @@ void MainWindow::newDeck()
  */
 void MainWindow::openDeck()
 {
-	QString filepath = QFileDialog.getOpenFileName(this, tr("Open Deck"), (QString) Preferences.getInstance().getValue("DEFAULT_EXPORT_LOCATION"), new Filter("*.elvl"));
-	if(filepath == Null || filepath = "")
-		return;
-
-	Deck deck = Deck.readFromDisk(filepath);
-	// TODO - check for already open decks
-	this->state.addDeck(deck);
+//	QString filepath = QFileDialog.getOpenFileName(this, tr("Open Deck"), (QString) Preferences.getInstance().getValue("DEFAULT_EXPORT_LOCATION"), new Filter("*.elvl"));
+//	if(filepath == NULL || filepath = "")
+//		return;
+//
+//	Deck deck = Deck.readFromDisk(filepath);
+//	// TODO - check for already open decks
+//	ViewState::Instance()->addDeck(deck);
 }
 
 /**
@@ -348,11 +350,11 @@ void MainWindow::openDeck()
  */
 void MainWindow::saveDeck()
 {
-	QString filepath = this->state.getCurrentDeck().getDiskLocation();
-	if(filepath == Null || filepath == "")
+	QString filepath = ViewState::Instance()->getCurrentDeck()->getDiskLocation();
+	if(filepath == NULL || filepath == "" || filepath.isEmpty())
 		saveDeckAs();
-	else
-		this->state.getCurrentDeck().writeToDisk(filepath);
+//	else
+//		ViewState::Instance()->getCurrentDeck().writeToDisk(filepath);
 }
 
 /**
@@ -360,11 +362,11 @@ void MainWindow::saveDeck()
  */
 void MainWindow::saveDeckAs()
 {
-	QString filepath = QFileDialog.getSaveFileName(this, tr("Save Deck"), (QString) Preferences.getInstance().getValue("DEFAULT_EXPORT_LOCATION"), new Filter("*.elvl"));
-	if(filepath == Null || filepath == "")
-		return;
-
-	this->state.getCurrentDeck().writeToDisk(filepath);
+//	QString filepath = QFileDialog.getSaveFileName(this, tr("Save Deck"), (QString) Preferences.getInstance().getValue("DEFAULT_EXPORT_LOCATION"), new Filter("*.elvl"));
+//	if(filepath == Null || filepath == "")
+//		return;
+//
+//	ViewState::Instance()->getCurrentDeck().writeToDisk(filepath);
 }
 
 /**
@@ -373,92 +375,92 @@ void MainWindow::saveDeckAs()
  */
 void MainWindow::printCurrentDeck()
 {
-	QPrinter printer = new QPrinter();
-	printer.setPageMargins(1, 1, 1, 1, QPrinter.Unit.Inch);
-	printer.setDuplex(QPrinter.DuplexMode.DuplexShortSide);
-	printer.setDoubleSidedPrinting(true);
-	printer.setOrientation(QPrinter.Orientation.Landscape);
-	QPrintDialog printDialog = new QPrintDialog(printer, this);
-	if(printDialog.exec() == QDialog.DialogCode.Accepted.value())
-	{
-		List<Card> cards = this->state.getCurrentDeck().getCards();
-		int cardWidth = indexCardWidth * printer.logicalDpiX();
-		int cardHeight = indexCardHeight * printer.logicalDpiY();
-		QRect pageBounds = printer.pageRect();
-		int numCardsHoriz = pageBounds.width() / cardWidth;
-		int numCardsVert = pageBounds.height() / cardHeight;
-		int numCardsPerPage = numCardsHoriz * numCardsVert;
-		int numPages = (int) Math.ceil(cards.size() / (double) numCardsPerPage);
-		// We want to center the cards in the page
-		int startingXPos = (pageBounds.width() - numCardsHoriz * cardWidth) / 2;
-		QPainter painter = new QPainter();
-		painter.begin(printer);
-		int x = startingXPos;
-		int y = 0;
-		int cardNum = 0;
-		String text = "";
-		QPixmap image = null;
-		for(int page = 0; page < numPages; page++)
-		{
-			// For both the page with questions, and the
-			// page with answers
-			for(int face = 0; face < 2; face++)
-			{
-				y = 0;
-				for(int j = 0; j < numCardsVert; j++)
-				{
-					x = startingXPos;
-					for(int i = 0; i < numCardsHoriz; i++)
-					{
-						int cardIndex = cardNum + j * numCardsHoriz + i;
-						// If it's the answers, we want to revert the order
-						// in which they're shown, so that when you do double
-						// sided printing, they're behind their corresponding
-						// questions.
-						if(face == 1)
-						{
-							cardIndex = cardNum + j * numCardsHoriz + (numCardsHoriz - 1 - i);
-						}
-						if(cardIndex >= cards.size())
-						{
-							text = "";
-						}
-						else if(face == 0)
-						{
-							CardSection question = cards.get(cardIndex).getQuestion();
-							if(question.hasText())
-								text = question.getText();
-							else
-								image = question.getImage();
-						}
-						else
-						{
-							CardSection answer = cards.get(cardIndex).getAnswer();
-							if(answer.hasText())
-								text = answer.getText();
-							else
-								image = answer.getImage();
-						}
-						QRect cardRectangle = new QRect(x, y, cardWidth, cardHeight);
-						QRect textRectangle = new QRect(x + 5, y + 5, cardWidth - 10, cardHeight - 10);
-						painter.drawRect(cardRectangle);
-						if(text.equals("") && image != null)
-							painter.drawImage(textRectangle, image.toImage());
-						else
-							painter.drawText(textRectangle, (Qt.AlignmentFlag.AlignCenter.value() | Qt.TextFlag.TextWordWrap.value()), text);
-						x += cardWidth;
-					}
-					y += cardHeight;
-				}
-				if(page != numPages - 1 || face == 0)
-				{
-					printer.newPage();
-				}
-			}
-			cardNum += numCardsPerPage;
-		}
-		painter.end();
-	}
+//	QPrinter printer();
+//	printer.setPageMargins(1, 1, 1, 1, QPrinter.Unit.Inch);
+//	printer.setDuplex(QPrinter.DuplexMode.DuplexShortSide);
+//	printer.setDoubleSidedPrinting(true);
+//	printer.setOrientation(QPrinter.Orientation.Landscape);
+//	QPrintDialog printDialog(printer, this);
+//	if(printDialog.exec() == QDialog.DialogCode.Accepted.value())
+//	{
+//		QList<Card> cards = ViewState::Instance()->getCurrentDeck().getCards();
+//		int cardWidth = indexCardWidth * printer.logicalDpiX();
+//		int cardHeight = indexCardHeight * printer.logicalDpiY();
+//		QRect pageBounds = printer.pageRect();
+//		int numCardsHoriz = pageBounds.width() / cardWidth;
+//		int numCardsVert = pageBounds.height() / cardHeight;
+//		int numCardsPerPage = numCardsHoriz * numCardsVert;
+//		int numPages = (int) ceil(cards.size() / (double) numCardsPerPage);
+//		// We want to center the cards in the page
+//		int startingXPos = (pageBounds.width() - numCardsHoriz * cardWidth) / 2;
+//		QPainter painter();
+//		painter.begin(printer);
+//		int x = startingXPos;
+//		int y = 0;
+//		int cardNum = 0;
+//		QString text = "";
+//		QPixmap image;
+//		for(int page = 0; page < numPages; page++)
+//		{
+//			// For both the page with questions, and the
+//			// page with answers
+//			for(int face = 0; face < 2; face++)
+//			{
+//				y = 0;
+//				for(int j = 0; j < numCardsVert; j++)
+//				{
+//					x = startingXPos;
+//					for(int i = 0; i < numCardsHoriz; i++)
+//					{
+//						int cardIndex = cardNum + j * numCardsHoriz + i;
+//						// If it's the answers, we want to revert the order
+//						// in which they're shown, so that when you do double
+//						// sided printing, they're behind their corresponding
+//						// questions.
+//						if(face == 1)
+//						{
+//							cardIndex = cardNum + j * numCardsHoriz + (numCardsHoriz - 1 - i);
+//						}
+//						if(cardIndex >= cards.size())
+//						{
+//							text = "";
+//						}
+//						else if(face == 0)
+//						{
+//							CardSection question = cards.get(cardIndex).getQuestion();
+//							if(question.hasText())
+//								text = question.getText();
+//							else
+//								image = question.getImage();
+//						}
+//						else
+//						{
+//							CardSection answer = cards.get(cardIndex).getAnswer();
+//							if(answer.hasText())
+//								text = answer.getText();
+//							else
+//								image = answer.getImage();
+//						}
+//						QRect cardRectangle(x, y, cardWidth, cardHeight);
+//						QRect textRectangle(x + 5, y + 5, cardWidth - 10, cardHeight - 10);
+//						painter.drawRect(cardRectangle);
+//						if(text == "" && &image != NULL)
+//							painter.drawImage(textRectangle, image.toImage());
+//						else
+//							painter.drawText(textRectangle, (Qt.AlignmentFlag.AlignCenter.value() | Qt.TextFlag.TextWordWrap.value()), text);
+//						x += cardWidth;
+//					}
+//					y += cardHeight;
+//				}
+//				if(page != numPages - 1 || face == 0)
+//				{
+//					printer.newPage();
+//				}
+//			}
+//			cardNum += numCardsPerPage;
+//		}
+//		painter.end();
+//	}
 }
 
 /**
@@ -466,8 +468,8 @@ void MainWindow::printCurrentDeck()
  */
 void MainWindow::setPreferences()
 {
-	PreferenceWindow preferences(this);
-	preferences.exec();
+//	PreferenceWindow preferences(this);
+//	preferences.exec();
 }
 
 /**
@@ -475,7 +477,7 @@ void MainWindow::setPreferences()
  */
 void MainWindow::newCard()
 {
-	this->state.addCard(new Card());
+	ViewState::Instance()->addCard(new Card());
 	editCard();
 }
 
@@ -484,11 +486,11 @@ void MainWindow::newCard()
  */
 void MainWindow::closeDeck()
 {
-	Deck d = state.getCurrentDeck();
-	if(d.hasChanged())
+	Deck* d = ViewState::Instance()->getCurrentDeck();
+	if(d->hasChanged())
 		if(!displaySaveDeckPrompt(d))
 			return;
-	this->state.removeDeck(d);
+	ViewState::Instance()->removeDeck(d);
 }
 
 /**
@@ -496,8 +498,8 @@ void MainWindow::closeDeck()
  */
 void MainWindow::renameDeck()
 {
-	QModelIndex index = treeModel->valueToIndex(state.getCurrentDeck());
-	treeView->edit(index);
+//	QModelIndex index = treeModel->valueToIndex(state.getCurrentDeck());
+//	treeView->edit(index);
 }
 
 /**
@@ -505,8 +507,8 @@ void MainWindow::renameDeck()
  */
 void MainWindow::renameCard()
 {
-	QModelIndex index = treeModel->valueToIndex(state.getCurrentCard());
-	treeView->edit(index);
+//	QModelIndex index = treeModel->valueToIndex(state.getCurrentCard());
+//	treeView->edit(index);
 }
 
 /**
@@ -514,21 +516,21 @@ void MainWindow::renameCard()
  */
 void MainWindow::editCard()
 {
-	Card c = state.getCurrentCard();
-
-	EditCardWindow edit(c);
-	EditCardGUI editGUI(this, edit);
-	editGUI.setWindowModality(Qt::WindowModal);
-	editGUI.setWindowOpacity(1.0);
-	editGUI.setWindowIcon(this->windowIcon());
-	editGUI.setWindowTitle(tr("Edit Card"));
-	QObject::connect(editGUI, SIGNAL(closing()), this->state, SLOT(refreshCurrentCard()));
-
-	QDesktopWidget qdw = new QDesktopWidget();
-	int screenCenterX = qdw.width() / 2;
-	int screenCenterY = qdw.height() / 2;
-	editGUI.setGeometry(screenCenterX - 400, screenCenterY - 300, 800, 600);
-	editGUI.show();
+//	Card c = state.getCurrentCard();
+//
+//	EditCardWindow edit(c);
+//	EditCardGUI editGUI(this, edit);
+//	editGUI.setWindowModality(Qt::WindowModal);
+//	editGUI.setWindowOpacity(1.0);
+//	editGUI.setWindowIcon(this->windowIcon());
+//	editGUI.setWindowTitle(tr("Edit Card"));
+//	QObject::connect(editGUI, SIGNAL(closing()), ViewState::Instance(), SLOT(refreshCurrentCard()));
+//
+//	QDesktopWidget qdw = new QDesktopWidget();
+//	int screenCenterX = qdw.width() / 2;
+//	int screenCenterY = qdw.height() / 2;
+//	editGUI.setGeometry(screenCenterX - 400, screenCenterY - 300, 800, 600);
+//	editGUI.show();
 }
 
 /**
@@ -536,18 +538,18 @@ void MainWindow::editCard()
  */
 void MainWindow::testCard()
 {
-	QMap<String, String> preferences();
-	if(Preferences.getInstance().getValue("SHOW_TEST_PREFERENCES") == "true")
-		preferences = PreferenceWindow.showTestPreferences(this);
-
-	if(&preferences == NULL)
-		return;
-
-	Test test(state.getCurrentDeck(), preferences);
-	TestWindowGUI gui(test, this);
-	gui.setWindowTitle("Testing");
-	gui.show();
-	this->setFocus(Qt::ActiveWindowFocusReason);
+//	QMap<String, String> preferences();
+//	if(Preferences.getInstance().getValue("SHOW_TEST_PREFERENCES") == "true")
+//		preferences = PreferenceWindow.showTestPreferences(this);
+//
+//	if(&preferences == NULL)
+//		return;
+//
+//	Test test(state.getCurrentDeck(), preferences);
+//	TestWindowGUI gui(test, this);
+//	gui.setWindowTitle("Testing");
+//	gui.show();
+//	this->setFocus(Qt::ActiveWindowFocusReason);
 }
 
 /**
@@ -556,25 +558,25 @@ void MainWindow::testCard()
  */
 void MainWindow::eLvlChallenge()
 {
-	QMap<String, String> preferences();
-	if(Preferences.getInstance().getValue("SHOW_TEST_PREFERENCES") == "true")
-		preferences = PreferenceWindow.showTestPreferences(this);
-
-	if(&preferences == NULL)
-		return;
-
-	Deck deck = getELevelChallengeDeck();
-	if(deck.numCards() == 0)
-	{
-		QMessageBox box = new QMessageBox(QMessageBox::Warning, tr("E-Level Challenge"), tr("Could not generate a deck for the E-Level Challenge. No open deck has incorrectly answered cards."));
-		box.exec();
-		return;
-	}
-	Test test(deck, preferences);
-	TestWindowGUI gui(test, this);
-	gui.setWindowTitle("E Level Challenge");
-	gui.show();
-	this->setFocus(Qt::ActiveWindowFocusReason);
+//	QMap<String, String> preferences();
+//	if(Preferences.getInstance().getValue("SHOW_TEST_PREFERENCES") == "true")
+//		preferences = PreferenceWindow.showTestPreferences(this);
+//
+//	if(&preferences == NULL)
+//		return;
+//
+//	Deck deck = getELevelChallengeDeck();
+//	if(deck.numCards() == 0)
+//	{
+//		QMessageBox box = new QMessageBox(QMessageBox::Warning, tr("E-Level Challenge"), tr("Could not generate a deck for the E-Level Challenge. No open deck has incorrectly answered cards."));
+//		box.exec();
+//		return;
+//	}
+//	Test test(deck, preferences);
+//	TestWindowGUI gui(test, this);
+//	gui.setWindowTitle("E Level Challenge");
+//	gui.show();
+//	this->setFocus(Qt::ActiveWindowFocusReason);
 }
 
 /**
@@ -585,24 +587,24 @@ void MainWindow::eLvlChallenge()
  */
 Deck MainWindow::getELevelChallengeDeck()
 {
-	Deck elvlDeck();
+	Deck elvlDeck;
 
 	time_t currentDate = time(NULL);
 	time_t previousDate = time(NULL) - 604800000;
 
-	foreach(Deck deck, state.getDecks())
+	foreach(Deck* deck, ViewState::Instance()->getDecks())
 	{
-		foreach(TestStat stat, deck.getTestStatistics())
+		foreach(TestStat* stat, deck->getTestStatistics())
 		{
 			// if the statistic set is over 7 days old we ignore it.
-			if(previousDate >= stat.getDate() && currentDate <= stat.getDate())
+			if(previousDate >= stat->getDate() && currentDate <= stat->getDate())
 			{
-				foreach(int id, stat.getIncorrectlyAnsweredCards())
-				{
-					Card c = deck.getCardWithID(id);
-					if(c != NULL && !elvlDeck.getCards().contains(card))
-						elvlDeck.addCard(card);
-				}
+//				foreach(int id, stat.getIncorrectlyAnsweredCards())
+//				{
+//					Card c = deck.getCardWithID(id);
+//					if(c != NULL && !elvlDeck.getCards().contains(card))
+//						elvlDeck.addCard(card);
+//				}
 			}
 		}
 	}
@@ -615,14 +617,14 @@ Deck MainWindow::getELevelChallengeDeck()
  */
 void MainWindow::closeEvent(QCloseEvent e)
 {
-	if(Preferences.getInstance().getValue("OPEN_PREVIOUS") == "true")
-		Preferences.getInstance().writeSettings(state.getDecks());
-	else
-		Preferences.getInstance().writeSettings();
+//	if(Preferences.getInstance().getValue("OPEN_PREVIOUS") == "true")
+//		Preferences.getInstance().writeSettings(state.getDecks());
+//	else
+//		Preferences.getInstance().writeSettings();
 
-	foreach(Deck d, state.getDecks())
+	foreach(Deck* d, ViewState::Instance()->getDecks())
 	{
-		if(d.hasChanged())
+		if(d->hasChanged())
 		{
 			if(!displaySaveDeckPrompt(d))
 			{
@@ -640,15 +642,15 @@ void MainWindow::closeEvent(QCloseEvent e)
  */
 void MainWindow::graphDeck()
 {
-	Deck d = state.getCurrentDeck();
-	if(&d == NULL)
-		return;
-
-	GraphWindow graph(d);
-	GraphWindowGUI gui(graph, this);
-	gui.setWindowTitle("Graph Statistics");
-	gui.show();
-	this.setFocus(Qt::ActiveWindowFocusReason);
+//	Deck d = state.getCurrentDeck();
+//	if(&d == NULL)
+//		return;
+//
+//	GraphWindow graph(d);
+//	GraphWindowGUI gui(graph, this);
+//	gui.setWindowTitle("Graph Statistics");
+//	gui.show();
+//	this.setFocus(Qt::ActiveWindowFocusReason);
 }
 
 /**
@@ -658,12 +660,12 @@ void MainWindow::graphDeck()
  *        a <code>Deck</code> that has changed
  * @return <code>false</code> if the close event has been canceled, <code>true</code> otherwise
  */
-bool MainWindow::displaySaveDeckPrompt(Deck d)
+bool MainWindow::displaySaveDeckPrompt(Deck* d)
 {
-	QMessageBox::StandardButton r = QMessageBox::warning(this, tr("Modified Deck"), "Deck \"" + d.getName() + "\" has been modified.\n" + "Save your changes?",  QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+	QMessageBox::StandardButton r = QMessageBox::warning(this, tr("Modified Deck"), "Deck \"" + d->getName() + "\" has been modified.\n" + "Save your changes?",  QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
 	if(r == QMessageBox::Yes)
 	{
-		state.getCurrentDeck().writeToDisk(d.getDiskLocation());
+//		state.getCurrentDeck().writeToDisk(d.getDiskLocation());
 		return true;
 	}
 	else if(r == QMessageBox::Cancel)

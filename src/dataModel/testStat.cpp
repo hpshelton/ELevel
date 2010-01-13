@@ -3,7 +3,7 @@
  * E-Level
  * December 28, 2009
  */
-#include "TestStat.h"
+#include "testStat.h"
 
 /**
  * Initializes a <code>DeckStat</code> with the specified parameters

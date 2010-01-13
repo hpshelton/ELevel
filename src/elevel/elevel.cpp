@@ -9,28 +9,26 @@
 #include <QIcon>
 #include <QString>
 
+#include "mainWindow.h"
+#include "defines.h"
 // #include "preferences.h"
 
 /**
- * Main class, responsible for the creation of the splash screen and the the main window.
- * It will likely also place initial calls to the the database later.
+ * Main class, responsible for the creation of the splash screen and the main window.
  *
  * @author H. Parker Shelton, Jesse Yates
  */
-class elevel
+int main(int argc, char** argv)
 {
-public:
-	static const QString imageLocation = "classpath:images/";
-
-	static void main(int argc, char** argv)
-	{
-		QApplication.initialize(argc, argv);
+	Q_INIT_RESOURCE(ELevel);
+	QApplication elevel(argc, argv);
+	elevel.setWindowIcon(QIcon(":/images/icon.png"));
 
 	//	QList<QString> openDecks = Preferences.getInstance().getPreviouslyOpenDecks();
-		QMainWindow elevel(openDecks);
-
-		elevel.setWindowIcon(new QIcon(ELevel.imageLocation + "icon.png"));
-		elevel.setWindowTitle("E-Level");
+	QList<QString> openDecks;
+	MainWindow mainWindow(openDecks);
+	mainWindow.setWindowTitle("E-Level");
+	mainWindow.setWindowIconText("E-Level");
 
 	//	if(!Preferences.getInstance().hasExportLocation())
 	//		Preferences.getInstance().changeExportLocation(elevel, "Please select a default directory for E-Level decks:");
@@ -43,9 +41,8 @@ public:
 	//		splashScreen.raise();
 	//	}
 
-		elevel.showNormal();
-		elevel.raise();
+	mainWindow.showNormal();
+	mainWindow.raise();
 
-		QApplication.exec();
-	}
-}
+	return elevel.exec();
+};

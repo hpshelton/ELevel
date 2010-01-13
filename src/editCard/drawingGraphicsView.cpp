@@ -3,7 +3,7 @@
  * E-Level
  * January 12, 2010
  */
-#include "drawingGraphicsScene.h"
+#include "drawingGraphicsView.h"
 
 /**
  * Constructor
@@ -11,10 +11,10 @@
  * @param model
  *        the model for this view
  */
-DrawingGraphicsScene::DrawingGraphicsView(DrawingGraphicsScene* model);
+DrawingGraphicsView::DrawingGraphicsView(DrawingGraphicsScene* model)
+	: QGraphicsView(model)
 {
-	super(model);
-	this->setSceneRect(0, 0, CardSection.WIDTH, CardSection.HEIGHT);
+	QGraphicsView::scene()->setSceneRect(0, 0, CARD_WIDTH, CARD_HEIGHT);
 	this->setAcceptDrops(true);
 }
 
@@ -23,17 +23,17 @@ DrawingGraphicsScene::DrawingGraphicsView(DrawingGraphicsScene* model);
  *
  * @return <code>QPixmap</code> of the current view
  */
-QPixmap DrawingGraphicsView::getImage()
+QPixmap* DrawingGraphicsView::getImage()
 {
-	QPixmap image(CardSection.WIDTH, CardSection.HEIGHT);
-	image.fill(QColor.white);
+	QPixmap* image = new QPixmap(CARD_WIDTH, CARD_HEIGHT);
+	image->fill(QColor(0,0,0));
 
-	QPainter painter();
-	painter.begin(image);
-	painter.setRenderHints(QPainter.RenderHint.Antialiasing, QPainter.RenderHint.SmoothPixmapTransform);
-	this->scene().setSceneRect(0, 0, CardSection.WIDTH, CardSection.HEIGHT);
-	this->scene().render(painter);
-	painter.end();
+	QPainter* painter = new QPainter();
+	painter->begin(image);
+	painter->setRenderHints(QPainter::Antialiasing, QPainter::SmoothPixmapTransform);
+	QGraphicsView::scene()->setSceneRect(0, 0, CARD_WIDTH, CARD_HEIGHT);
+	QGraphicsView::scene()->render(painter);
+	painter->end();
 
 	return image;
 }
@@ -47,7 +47,7 @@ QPixmap DrawingGraphicsView::getImage()
  *        Amount to scale height
  * @return The scaled <code>QPixmap</code> of the view
  */
-QPixmap DrawingGraphicsView::getScaledImage(int width, int height)
+QPixmap* DrawingGraphicsView::getScaledImage(int width, int height)
 {
-	return this->getImage().scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.FastTransformation);
+	//return this->getImage()->scaled(width, height, Qt::KeepAspectRatio, Qt::FastTransformation);
 }

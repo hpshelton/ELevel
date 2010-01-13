@@ -10,9 +10,10 @@
 #include <QList>
 #include <algorithm>
 #include <cstdlib>
+#include <stdlib.h>
 
-#include "Card.h"
-#include "TestStat.h"
+#include "card.h"
+#include "testStat.h"
 
 /**
  * {@link Deck} represents the high-level intuition of a deck of flash cards.
@@ -30,10 +31,10 @@ protected:
 	QString name;
 
 	/** The set of statistics for this <code>Deck</code>, compiled over time */
-	QList<TestStat> testStats;
+	QList<TestStat*> testStats;
 
 	/** The set of cards contained in this <code>Deck</code> */
-	QList<Card> cards;
+	QList<Card*> cards;
 
 	/** The value used for the id of the next card to be added to this deck. Incremented automatically. */
 	int cardIdIterator;
@@ -61,7 +62,7 @@ public:
 	 * @param c
 	 *        a {@link Card} to be added to the deck
 	 */
-	void addCard(Card c);
+	void addCard(Card* c);
 
 	/**
 	 * Add the specified {@link Card} to the <code>Deck</code> at position <code>i</code>
@@ -71,7 +72,7 @@ public:
 	 * @param c
 	 *        The <code>Card</code> to be added
 	 */
-	void addCardAtIndex(int i, Card c);
+	void addCardAtIndex(int i, Card* c);
 
 	/**
 	 * Add the list of cards to this deck
@@ -79,7 +80,7 @@ public:
 	 * @param cards
 	 *        A <code>List</code> of cards to add to this deck
 	 */
-	void addCards(QList<Card> c);
+	void addCards(QList<Card*> c);
 
 	/**
 	 * Adds a new testing statistic to the current set of statistics for the deck
@@ -87,7 +88,7 @@ public:
 	 * @param d
 	 *        {@link TestStat} to be associated with the deck
 	 */
-	void addTestStat(TestStat t);
+	void addTestStat(TestStat* t);
 
 	/**
 	 * Removes all {@link Card}s from the <code>Deck</code>
@@ -105,9 +106,9 @@ public:
 	 * @param c
 	 *        the {@link Card} whose presence in this <code>Deck</code> is to be tested
 	 */
-	bool containsCard(Card c)
+	bool containsCard(Card* c)
 	{
-		return std::find(this->cards.begin(), this->cards.end(), c) == this->cards.end();
+		return this->cards.contains(c);
 	}
 
 	bool operator==(Deck other);
@@ -118,7 +119,7 @@ public:
 	 * @param index
 	 * @return The card at the index of this deck
 	 */
-	Card getCard(int index)
+	Card* getCard(int index)
 	{
 		return this->cards.at(index);
 	}
@@ -129,14 +130,14 @@ public:
 	 * @param id
 	 * @return The card with the specified ID
 	 */
-	Card getCardWithID(int id);
+	Card* getCardWithID(int id);
 
 	/**
 	 * Returns the {@link Collection} of {@link Card}s in this <code>Deck</code>
 	 *
 	 * @return the {@link Collection} of {@link Card}s in this <code>Deck</code>
 	 */
-	QList<Card> getCards()
+	QList<Card*> getCards()
 	{
 		return this->cards;
 	}
@@ -156,7 +157,7 @@ public:
 	 *
 	 * @return First card of the deck
 	 */
-	Card getFirstCard()
+	Card* getFirstCard()
 	{
 		return this->cards.at(0);
 	}
@@ -166,7 +167,7 @@ public:
 	 *
 	 * @return The last card in the deck
 	 */
-	Card getLastCard()
+	Card* getLastCard()
 	{
 		return this->cards.at(numCards() - 1);
 	}
@@ -186,7 +187,7 @@ public:
 	 *
 	 * @return a {@link Collection} of {@link TestStat}s representing the cumulative statistics of this deck
 	 */
-	QList<TestStat> getTestStatistics()
+	QList<TestStat*> getTestStatistics()
 	{
 		return this->testStats;
 	}
@@ -205,8 +206,10 @@ public:
 	 * @return an <code>int</code> representing the index of the specified <code>Card</code> in the specified
 	 *         <code>Deck</code>, -1 if the <code>Card</code> is not contained in the specified <code>Deck</code>
 	 */
-	int indexOf(Card c);
-
+	int indexOf(Card* c)
+	{
+		return this->cards.indexOf(c);
+	}
 
 	/**
 	 * Returns <code>true</code> if there are no statistics
@@ -233,9 +236,8 @@ public:
 	 * Returns the number of test statistics in this deck
 	 *
 	 * @return the number of test statistics in this deck
-	 * @see java.util.Collection#size()
 	 */
-	int numDeckStatistics()
+	int numTestStats()
 	{
 		return this->testStats.size();
 	}
@@ -247,7 +249,7 @@ public:
 	 *        the {@link Card} to be removed from the <code>Deck</code>, if it is present
 	 * @see java.util.Collection#remove(Object)
 	 */
-	void removeCard(Card c);
+	void removeCard(Card* c);
 
 	/**
 	 * Updates the location of this <code>Deck</code> on disk
@@ -337,7 +339,7 @@ private:
 		return ++this->cardIdIterator;
 	}
 
-	void assignValidCardID(Card c);
+	void assignValidCardID(Card* c);
 };
 
 #endif /* DECK_H_ */

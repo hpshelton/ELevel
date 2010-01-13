@@ -8,8 +8,8 @@
 
 #include <QList>
 
-#include "Card.h"
-#include "Deck.h"
+#include "card.h"
+#include "deck.h"
 
 /**
  * A Singleton class that keeps track of the current deck and the list of decks. It also emits signals to the
@@ -25,31 +25,52 @@ private:
 	/**
 	 * A private constructor to initialize the class. Called only once by itself
 	 */
-	ViewState();
+	ViewState() {};
+	ViewState(const ViewState&) {};
+	ViewState& operator=(const ViewState&) {};
 
 protected:
 	/** The list of decks */
-	QList<Deck> decks;
+	QList<Deck*> decks;
 
 	/** The current deck */
-	Deck currentDeck;
+	Deck* currentDeck;
 
 	/** The current card */
-	Card currentCard;
+	Card* currentCard;
 
-public signals:
-	/** Signals to be emitted */
-	void deckAdded(Deck, int);
-	void deckRemoved(Deck, int);
-	void deckChanged(Deck);
-	void cardAdded(Card, int);
-	void cardRemoved(Card);
-	void cardSelectedInTree(Card);
-	void cardChangedInCardArea(Card, Deck);
+signals:
+	void deckAdded(Deck*, int);
+	void deckRemoved(Deck*, int);
+	void deckChanged(Deck*);
+	void cardAdded(Card*, int);
+	void cardRemoved(Card*);
+	void cardSelectedInTree(Card*);
+	void cardChangedInCardArea(Card*, Deck*);
+
+public slots:
+	/**
+	 * Shuffles the deck list
+	 */
+	void shuffleCurrentDeck();
+
+	/**
+	 * Duplicates the currently selected card
+	 */
+	void duplicateCard();
+
+	/**
+	 * Removes the currently selected card from the deck.
+	 */
+	void removeCurrentCard();
 
 public:
 	/** The single instance of this class */
-	static const ViewState INSTANCE;
+	static ViewState* Instance()
+	{
+	  static ViewState singleton;
+	  return &singleton;
+	}
 
 	/**
 	 * Adds {@link Deck} to the set of decks at the specified index.
@@ -60,7 +81,7 @@ public:
 	 * @param index
 	 *        the position at which to add the deck
 	 */
-	void addDeckAtIndex(Deck deck, int index);
+	void addDeckAtIndex(Deck* deck, int index);
 
 	/**
 	 * Adds {@link Deck} to the set of decks at the end of the list.
@@ -69,7 +90,7 @@ public:
 	 * @param deck
 	 *        the new <code>deck</code> to be added
 	 */
-	void addDeck(Deck deck)
+	void addDeck(Deck* deck)
 	{
 		addDeckAtIndex(deck, decks.size());
 	}
@@ -80,14 +101,14 @@ public:
 	 * @param deck
 	 *        The deck to remove
 	 */
-	void removeDeck(Deck deck);
+	void removeDeck(Deck* deck);
 
 	/**
 	 * Returns the list of all decks
 	 *
 	 * @return a list of decks
 	 */
-	QList<Deck> getDecks()
+	QList<Deck*> getDecks()
 	{
 		return decks;
 	}
@@ -108,19 +129,14 @@ public:
 	 * @param deck
 	 *        the new <code>deck</code>
 	 */
-	void setCurrentDeck(Deck deck);
-
-	/**
-	 * Shuffles the deck list
-	 */
-	void shuffleCurrentDeck();
+	void setCurrentDeck(Deck* deck);
 
 	/**
 	 * Returns the current <code>Deck</code> the user is on
 	 *
 	 * @return the current <code>Deck</code>
 	 */
-	Deck getCurrentDeck()
+	Deck* getCurrentDeck()
 	{
 		return this->currentDeck;
 	}
@@ -141,7 +157,7 @@ public:
 	 * @param index
 	 *        The index at which to add the card into the current deck
 	 */
-	void addCardAtIndex(Card c, int index);
+	void addCardAtIndex(Card* c, int index);
 
 	/**
 	 * Adds a card to the end of the current deck
@@ -149,9 +165,9 @@ public:
 	 * @param c
 	 *        The card to add
 	 */
-	void addCard(Card c)
+	void addCard(Card* c)
 	{
-		addCardAtIndex(c, currentDeck.numCards());
+		addCardAtIndex(c, currentDeck->numCards());
 	}
 
 	/**
@@ -163,7 +179,7 @@ public:
 	 * @param d
 	 *        The deck the card belongs to
 	 */
-	void setCurrentCardAndDeck(Card c, Deck d);
+	void setCurrentCardAndDeck(Card* c, Deck* d);
 
 	/**
 	 * Helper method to get the current card of
@@ -171,12 +187,7 @@ public:
 	 *
 	 * @return the current card
 	 */
-	Card getCurrentCard();
-
-	/**
-	 * Removes the currently selected card from the deck.
-	 */
-	void removeCurrentCard();
+	Card* getCurrentCard();
 
 	/**
 	 * Renames the currently selected card
@@ -184,11 +195,6 @@ public:
 	 * @param newTitle
 	 */
 	void renameCurrentCard(QString newTitle);
-
-	/**
-	 * Duplicates the currently selected card
-	 */
-	void duplicateCard();
 
 	/**
 	 * Causes the current card to be refreshed. Called when
@@ -207,6 +213,6 @@ public:
 	 * Wraps to the first card in the deck.
 	 */
 	void nextCard();
-}
+};
 
 #endif // VIEWSTATE_H

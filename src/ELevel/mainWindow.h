@@ -6,17 +6,30 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <ifstream>
+#include <iostream>
 #include <time.h>
 
+#include <QMainWindow>
 #include <QDockWidget>
+#include <QMenuBar>
 #include <QToolBar>
+#include <QToolButton>
 #include <QAction>
+#include <QList>
+#include <QString>
+#include <QMessageBox>
+#include <QModelIndex>
+#include <QPrinter>
+#include <QPrintDialog>
+#include <QPainter>
+#include <QFileDialog>
 
-#include "ViewState.h"
-#include "DeckTreeGUI.h"
-#include "DeckTreeModel.h"
-#include "Deck.h"
+#include "viewState.h"
+//#include "deckTreeGUI.h"
+//#include "deckTreeModel.h"
+//#include "cardAreaGui.h"
+#include "deck.h"
+#include "defines.h"
 
 /**
  * Main window that calls the other subunits for the program.
@@ -27,21 +40,25 @@ class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 
-private:
-	/** Reference to the state singleton */
-	ViewState state;
+public:
+	/**
+	 * Initializes a new MainWindow
+	 */
+	MainWindow(QList<QString> open);
+	MainWindow();
 
+private:
 	/** Tree widget for the deck of cards */
-	DeckTreeGUI* treeView;
+	//DeckTreeGUI* treeView;
 
 	/** Tree widget model */
-	DeckTreeModel* treeModel;
+	//DeckTreeModel* treeModel;
 
 	/** Dock widget to hold the tree widget */
 	QDockWidget* dockTreeWidget;
 
 	/** The main menu for the program */
-	QMenuBar menuBar;
+	QMenuBar* menuBar;
 
 	/** The toolbar used for file menu options */
 	QToolBar* fileToolbar;
@@ -77,21 +94,9 @@ private:
 	QAction* renameCardAction;
 	QAction* deleteCardAction;
 
-	/** The width of the cards printed in inches */
-	const int indexCardWidth = 4;
-	const int indexCardHeight = 2;
-
-
 	/** The central card area of the GUI */
-	CardAreaGUI* cardArea;
+	//CardAreaGUI* cardArea;
 
-public:
-	/**
-	 * Initializes a new MainWindow
-	 */
-	MainWindow(List<String> open);
-
-private:
 	/**
 	 * Initializes the QActions required for MainWindow
 	 */
@@ -113,22 +118,17 @@ private:
 	 *
 	 * @param currentCard
 	 */
-	void toggleActions(Card currentCard);
+	void toggleActions(Card* currentCard);
 
 	/**
 	 * Sets up the basic tree view of the {@link Deck}s using the {@link DeckTreeModel}
 	 */
-	void setupDeckTree();
+	//void setupDeckTree();
 
 	/**
 	 * Sets up the tree view of the {@link Card}s under the currently selected Deck using {@link CardAreaGUI}
 	 */
-	void setupCardArea();
-
-	/**
-	 * Save the <code>Deck</code> by prompting the user for a location on disk
-	 */
-	void saveDeckAs();
+	//void setupCardArea();
 
 	/**
 	 * Returns a <code>Deck</code> containing all cards from open <code>Deck</code>s answered
@@ -145,7 +145,7 @@ private:
 	 *        a <code>Deck</code> that has changed
 	 * @return <code>false</code> if the close event has been canceled, <code>true</code> otherwise
 	 */
-	bool displaySaveDeckPrompt(Deck d);
+	bool displaySaveDeckPrompt(Deck* d);
 
 private slots:
 	/**
@@ -167,6 +167,11 @@ private slots:
 	 * Save the <code>deck</code> based on the deck's current location on disk
 	 */
 	void saveDeck();
+
+	/**
+	 * Save the <code>Deck</code> by prompting the user for a location on disk
+	 */
+	void saveDeckAs();
 
 	/**
 	 * Print the current deck such that you can do double sided printing

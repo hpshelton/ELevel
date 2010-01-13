@@ -1,21 +1,19 @@
-/*
- *  DrawingGraphicsScene.h
- *  
- *
- *  Created by Parker Shelton on 12/27/09.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
+/**
+ * DrawingGraphicsScene.h
+ * E-Level
+ * January 12, 2010
  */
 #ifndef DRAWINGGRAPHICSSCENE_H_
 #define DRAWINGGRAPHICSSCENE_H_
 
-#include <string>
+#include <QString>
+#include <QGraphicsScene>
 
-class DrawingGraphicsScene
+class DrawingGraphicsScene : public QGraphicsScene
 {
 public:
 	int hashCode();
-	std::string toString();
+	QString toString();
 };
 
 #endif /* DRAWINGGRAPHICSSCENE_H_ */

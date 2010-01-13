@@ -3,7 +3,7 @@
  * E-Level
  * December 27, 2009
  */
-#include "CardSection.h"
+#include "cardSection.h"
 
 /**
  * Instantiates a <code>CardSection</code>
@@ -20,8 +20,8 @@ CardSection::CardSection()
  * @param s
  *        a <code>DrawingGraphicsScene</code> representing the multimedia contents of this <code>CardSection</code>
  */
-CardSection::CardSection(DrawingGraphicsScene* s) :
-		scene(s)
+CardSection::CardSection(DrawingGraphicsScene* s)
+	: scene(s)
 {
 	init();
 }
@@ -40,14 +40,14 @@ CardSection::CardSection(QString s)
 		this->text = s;
 	}
 	this->scene = new DrawingGraphicsScene();
-	this->image = new DrawingGraphicsView(scene)->getImage();
+	this->image = (new DrawingGraphicsView(scene))->getImage();
 }
 
 void CardSection::init()
 {
 	this->hasTextContent = false;
 	this->text = "";
-	this->image = new DrawingGraphicsView(this->scene)->getImage();
+	this->image = (new DrawingGraphicsView(this->scene))->getImage();
 }
 
 /**
@@ -81,11 +81,11 @@ void CardSection::setScene(DrawingGraphicsScene* s)
 		this->scene = s;
 
 		QList<QGraphicsItem*> items = s->items();
-		if(items.size() == 1 && items.at(0)->type() == QGraphicsTextItem.type())
+		if(items.size() == 1 && items.at(0)->type() == QGraphicsTextItem::Type)
 		{
 			this->text = (dynamic_cast<QGraphicsTextItem*> (items.at(0)))->toPlainText();
 			this->hasTextContent = true;
-			this->image = new DrawingGraphicsView(scene)->getImage();
+			this->image = (new DrawingGraphicsView(scene))->getImage();
 		}
 		else
 		{

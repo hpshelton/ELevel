@@ -3,14 +3,7 @@
  * E-Level
  * January 6, 2010
  */
-
-/**
- * A private constructor to initialize the
- * class. Called only once by itself
- */
-ViewState::ViewState()
-{
-}
+#include "viewState.h"
 
 /**
  * Adds {@link Deck} to the set of decks at the specified index.
@@ -21,16 +14,16 @@ ViewState::ViewState()
  * @param index
  *        the position at which to add the deck
  */
-void ViewState::addDeckAtIndex(Deck deck, int index)
+void ViewState::addDeckAtIndex(Deck* deck, int index)
 {
 	// TODO: Make sure you only have 1 deck of a type
-	if(deck.getName() == "")
+	if(deck->getName() == "")
 		return;
 
 	this->currentDeck = deck;
-	this->decks.add(index, deck);
+	this->decks.insert(index, deck);
+	this->currentCard = NULL;
 	emit deckAdded(deck, index);
-	this->currentCard = null;
 }
 
 /**
@@ -39,23 +32,23 @@ void ViewState::addDeckAtIndex(Deck deck, int index)
  * @param deck
  *        The deck to remove
  */
-void ViewState::removeDeck(Deck deck)
+void ViewState::removeDeck(Deck* deck)
 {
 	int deckIndex = this->decks.indexOf(deck);
+	this->decks.removeAt(deckIndex);
+	this->currentCard = NULL;
 	emit deckRemoved(deck, deckIndex);
-	this->decks.remove(deck);
-	this->currentCard = null;
 
 	if(this->decks.size() <= 0)
 	{
-		this->currentDeck = null;
-		emit cardSelectedInTree(null);
+		this->currentDeck = NULL;
+		emit cardSelectedInTree(NULL);
 	}
 
 	if(--deckIndex < 0)
 		deckIndex = this->decks.size();
 	else if(this->decks.size() > 0)
-		this->currentDeck = this->decks.get(deckIndex);
+		this->currentDeck = this->decks.at(deckIndex);
 }
 
 /**
@@ -64,11 +57,11 @@ void ViewState::removeDeck(Deck deck)
  * @param deck
  *        the new <code>deck</code>
  */
-void ViewState::setCurrentDeck(Deck deck)
+void ViewState::setCurrentDeck(Deck* deck)
 {
 	this->currentDeck = deck;
-	this->currentCard = null;
-	emit cardSelectedInTree(getCurrentCard());
+	this->currentCard = NULL;
+	emit cardSelectedInTree(NULL);
 }
 
 /**
@@ -76,14 +69,16 @@ void ViewState::setCurrentDeck(Deck deck)
  */
 void ViewState::shuffleCurrentDeck()
 {
-	int currentCardIndex = this->currentDeck.getCards().indexOf(getCurrentCard());
-	this->currentDeck.shuffle();
+	if(this->currentDeck == NULL || this->currentDeck->numCards() <= 1)
+		return;
 
-	this->currentCard = this->currentDeck.getCard(currentCardIndex);
+	int currentCardIndex = this->currentDeck->getCards().indexOf(getCurrentCard());
+	this->currentDeck->shuffle();
+	this->currentCard = this->currentDeck->getCard(currentCardIndex);
 
 	emit deckChanged(this->currentDeck);
-	emit cardSelectedInTree(getCurrentCard());
-	emit cardChangedInCardArea(getCurrentCard(), this->currentDeck);
+	emit cardSelectedInTree(this->currentCard);
+	emit cardChangedInCardArea(this->currentCard, this->currentDeck);
 }
 
 /**
@@ -94,10 +89,10 @@ void ViewState::shuffleCurrentDeck()
  */
 void ViewState::renameCurrentDeck(QString name)
 {
-	if(this->currentDeck != null)
+	if(this->currentDeck != NULL && name != NULL && !name.isEmpty() && name != "")
 	{
-		this->currentDeck.setName(name);
-		this->currentDeck.setHasChanged(true);
+		this->currentDeck->setHasChanged(true);
+		this->currentDeck->setName(name);
 	}
 }
 
@@ -109,9 +104,9 @@ void ViewState::renameCurrentDeck(QString name)
  * @param index
  *        The index at which to add the card into the current deck
  */
-void ViewState::addCardAtIndex(Card c, int index)
+void ViewState::addCardAtIndex(Card* c, int index)
 {
-	this->currentDeck.addCardAtIndex(index, c);
+	this->currentDeck->addCardAtIndex(index, c);
 	this->currentCard = c;
 	emit cardAdded(c, index);
 }
@@ -125,26 +120,23 @@ void ViewState::addCardAtIndex(Card c, int index)
  * @param d
  *        The deck the card belongs to
  */
-void ViewState::setCurrentCardAndDeck(Card c, Deck d)
+void ViewState::setCurrentCardAndDeck(Card* c, Deck* d)
 {
 	this->currentDeck = d;
 	this->currentCard = c;
-
 	emit cardSelectedInTree(c);
 }
 
 /**
- * Helper method to get the current card of
- * the current deck
+ * Helper method to get the current card of the current deck
  *
  * @return the current card
  */
-Card ViewState::getCurrentCard()
+Card* ViewState::getCurrentCard()
 {
-	if(this->currentDeck == null)
-		return null;
-	if(this->currentDeck.numCards() == 0)
-		return null;
+	// TODO - HPS - Is this check necessary?
+	if(this->currentDeck == NULL || this->currentDeck->numCards() == 0)
+		return NULL;
 	return currentCard;
 }
 
@@ -153,33 +145,34 @@ Card ViewState::getCurrentCard()
  */
 void ViewState::removeCurrentCard()
 {
-	if(getCurrentCard() != null)
+	if(getCurrentCard() != NULL)
 	{
-		Card newCurrentCard;
+		Card* newCurrentCard;
 
-		if(this->currentDeck.numCards() > 1)
+		if(this->currentDeck->numCards() > 1)
 		{
-			Card removingCard = getCurrentCard();
-			int currentCardIndex = this->currentDeck.getCards().indexOf(removingCard);
+			Card* removingCard = getCurrentCard();
+			int currentCardIndex = this->currentDeck->getCards().indexOf(removingCard);
 
 			if(currentCardIndex == 0)
-				newCurrentCard = this->currentDeck.getCard(1);
+				newCurrentCard = this->currentDeck->getCard(1);
 			else
-				newCurrentCard = this->currentDeck.getCard(currentCardIndex - 1);
+				newCurrentCard = this->currentDeck->getCard(currentCardIndex - 1);
 
+			this->currentDeck->removeCard(removingCard);
 			emit cardRemoved(removingCard);
-			this->currentDeck.removeCard(removingCard);
-			setCurrentCardAndDeck(newCurrentCard, getCurrentDeck());
-			emit cardChangedInCardArea(getCurrentCard(), getCurrentDeck());
+
+			setCurrentCardAndDeck(newCurrentCard, this->currentDeck);
+			emit cardChangedInCardArea(getCurrentCard(), this->currentDeck);
 		}
-		else if(currentDeck.numCards() == 1)
+		else if(this->currentDeck->numCards() == 1)
 		{
-			Card removingCard = getCurrentCard();
-
+			Card* removingCard = getCurrentCard();
+			this->currentDeck->removeCard(removingCard);
 			emit cardRemoved(removingCard);
-			this->currentDeck.removeCard(removingCard);
-			emit cardChangedInCardArea(null, getCurrentDeck());
-			emit cardSelectedInTree(null);
+
+			emit cardChangedInCardArea(NULL, this->currentDeck);
+			emit cardSelectedInTree(NULL);
 		}
 	}
 }
@@ -191,10 +184,10 @@ void ViewState::removeCurrentCard()
  */
 void ViewState::renameCurrentCard(QString newTitle)
 {
-	if(this->currentCard != null)
+	if(this->currentCard != NULL && newTitle != NULL && newTitle != "" && !newTitle.isEmpty())
 	{
-		this->currentCard.setTitle(newTitle);
-		this->currentDeck.setHasChanged(true);
+		this->currentDeck->setHasChanged(true);
+		this->currentDeck->setName(newTitle);
 	}
 }
 
@@ -204,8 +197,8 @@ void ViewState::renameCurrentCard(QString newTitle)
 void ViewState::duplicateCard()
 {
 	// TODO: Use copy constructor
-	Card currentCard = getCurrentCard();
-	Card duplicateCard(currentCard.getQuestion(), currentCard.getAnswer(), currentCard.getHint(), currentCard.getAdditionalInfo());
+	Card* currentCard = getCurrentCard();
+	Card* duplicateCard = new Card(currentCard->getQuestion(), currentCard->getAnswer(), currentCard->getHint(), currentCard->getAdditionalInfo());
 	addCard(duplicateCard);
 }
 
@@ -216,7 +209,7 @@ void ViewState::duplicateCard()
 void ViewState::refreshCurrentCard()
 {
 	emit cardSelectedInTree(getCurrentCard());
-	emit cardChangedInCardArea(getCurrentCard(), getCurrentDeck());
+	emit cardChangedInCardArea(getCurrentCard(), this->currentDeck);
 }
 
 /**
@@ -225,16 +218,16 @@ void ViewState::refreshCurrentCard()
  */
 void ViewState::previousCard()
 {
-	if(this->currentDeck != null)
+	if(this->currentDeck != NULL)
 	{
-		int cardIndex = currentDeck.indexOf(this->currentCard) - 1;
+		int cardIndex = currentDeck->indexOf(this->currentCard) - 1;
 
 		if(cardIndex < 0)
-			this->currentCard = this->currentDeck.getLastCard();
+			this->currentCard = this->currentDeck->getLastCard();
 		else
-			this->currentCard = this->currentDeck.getCard(cardIndex);
+			this->currentCard = this->currentDeck->getCard(cardIndex);
 
-		emit cardChangedInCardArea(getCurrentCard(), getCurrentDeck());
+		emit cardChangedInCardArea(getCurrentCard(), this->currentDeck);
 	}
 }
 
@@ -244,15 +237,15 @@ void ViewState::previousCard()
  */
 void ViewState::nextCard()
 {
-	if(this->currentDeck != null)
+	if(this->currentDeck != NULL)
 	{
-		int cardIndex = this->currentDeck.indexOf(currentCard) + 1;
+		int cardIndex = this->currentDeck->indexOf(currentCard) + 1;
 
-		if(cardIndex >= this->currentDeck.numCards())
-			this->currentCard = this->currentDeck.getFirstCard();
+		if(cardIndex >= this->currentDeck->numCards())
+			this->currentCard = this->currentDeck->getFirstCard();
 		else
-			this->currentCard = this->currentDeck.getCard(cardIndex);
+			this->currentCard = this->currentDeck->getCard(cardIndex);
 
-		emit cardChangedInCardArea(getCurrentCard(), getCurrentDeck());
+		emit cardChangedInCardArea(getCurrentCard(), this->currentDeck);
 	}
 }

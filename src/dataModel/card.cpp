@@ -3,7 +3,7 @@
  * E-Level
  * December 27, 2009
  */
-#include "Card.h"
+#include "card.h"
 
 /**
  * Instantiates a <code>Card</code>
@@ -29,9 +29,7 @@ Card::Card(CardSection* q, CardSection* a, CardSection* h, CardSection* i) :
 		question(q), answer(a), hint(h), additionalInfo(i)
 {
 	this->title = "";
-
 	this->ID = -1;
-
 	setDefaultSettings();
 }
 
@@ -51,7 +49,6 @@ Card::Card(CardSection* q, CardSection* a, CardSection* h, CardSection* i) :
 Card::Card(DrawingGraphicsScene* q, DrawingGraphicsScene* a, DrawingGraphicsScene* h, DrawingGraphicsScene* i)
 {
 	init();
-
 	this->question->setScene(q);
 	this->answer->setScene(a);
 	this->hint->setScene(h);
@@ -65,9 +62,7 @@ void Card::init()
 	this->hint = new CardSection();
 	this->additionalInfo = new CardSection();
 	this->title = "";
-
 	this->ID = -1;
-
 	setDefaultSettings();
 }
 
@@ -125,8 +120,10 @@ void Card::setOptions(QMap<QString, bool> p)
 	int index = 0;
 	QList<QString> keys = p.keys();
 	QList<bool> values = p.values();
-	while(index < p.size())
-		this->options.insert(keys.at(index), values.at(index++));
+	while(index < p.size()) {
+		this->options.insert(keys.at(index), values.at(index));
+		index++;
+	}
 }
 
 /**

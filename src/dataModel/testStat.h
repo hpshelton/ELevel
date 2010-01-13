@@ -35,6 +35,7 @@ protected:
 	/** The duration of this test in seconds */
 	int duration;
 
+public:
 	/**
 	 * Initializes an empty <code>DeckStat</code> with the current date and time
 	 */
@@ -115,7 +116,6 @@ protected:
 	 */
 	// std::string toString();
 
-public:
 	bool operator==(TestStat other);
 };
 
