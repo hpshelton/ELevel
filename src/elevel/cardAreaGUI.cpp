@@ -1,5 +1,5 @@
 /**
- * cardAreaGUI.h
+ * cardAreaGUI.cpp
  * E-Level
  * January 13, 2010
  */

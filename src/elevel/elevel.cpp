@@ -11,6 +11,7 @@
 
 #include "mainWindow.h"
 #include "defines.h"
+#include "splashScreen.h"
 // #include "preferences.h"
 
 /**
@@ -35,10 +36,11 @@ int main(int argc, char** argv)
 
 	//	if(Preferences.getInstance().getValue("SHOW_SPLASH").equals("true"))
 	//	{
-	//		QSplashScreen splashScreen(3);
-	//		// Creates a splashScreen open for 3 seconds
-	//		splashScreen.show();
-	//		splashScreen.raise();
+			QPixmap splashPixmap(":/images/splash.png");
+			// Creates a splashscreen open for 3 seconds
+			SplashScreen splashScreen(splashPixmap, 3);
+			splashScreen.show();
+			splashScreen.raise();
 	//	}
 
 	mainWindow.showNormal();

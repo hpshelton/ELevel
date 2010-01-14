@@ -26,7 +26,8 @@ HEADERS += src/defines.h \
 	src/editCard/drawingGraphicsView.h \
 	src/elevel/mainWindow.h \
 	src/elevel/viewState.h \
-	src/elevel/cardAreaGUI.h
+	src/elevel/cardAreaGUI.h \
+	src/elevel/splashScreen.h
 SOURCES += src/dataModel/card.cpp \
 	src/dataModel/cardSection.cpp \
 	src/dataModel/deck.cpp \
@@ -35,5 +36,10 @@ SOURCES += src/dataModel/card.cpp \
 	src/elevel/mainWindow.cpp \
 	src/elevel/viewState.cpp \
 	src/editCard/drawingGraphicsView.cpp \
-	src/elevel/cardAreaGUI.cpp
-RESOURCES += src/ELevel.qrc \
+	src/elevel/cardAreaGUI.cpp \
+	src/elevel/splashScreen.cpp
+RESOURCES += src/ELevel.qrc
+
+macx{
+  ICON = images/icon.icns
+}
