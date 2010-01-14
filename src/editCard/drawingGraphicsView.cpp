@@ -26,7 +26,7 @@ DrawingGraphicsView::DrawingGraphicsView(DrawingGraphicsScene* model)
 QPixmap* DrawingGraphicsView::getImage()
 {
 	QPixmap* image = new QPixmap(CARD_WIDTH, CARD_HEIGHT);
-	image->fill(QColor(0,0,0));
+	image->fill(Qt::white);
 
 	QPainter* painter = new QPainter();
 	painter->begin(image);

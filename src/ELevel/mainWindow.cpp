@@ -311,7 +311,7 @@ void MainWindow::setupCardArea()
  */
 void MainWindow::aboutELevel()
 {
-	QMessageBox::about(this, tr("About E-Level"), tr("<b>Version 0.7</b><br><br><b>Written by:</b><br>H. Parker Shelton - web \"development\", resident Qt \"expert\"<br>Jesse Yates - the wild card<br>Greg Anderson - algorithmic and concept design<br>Pablo Lee - misc.<br>"));
+	QMessageBox::about(this, tr("About E-Level"), tr("<b>Version ") + QString(VERSION) + tr("</b><br><br><b>Written by:</b><br>H. Parker Shelton - web \"development\", resident Qt \"expert\"<br>Jesse Yates - the wild card<br>Greg Anderson - algorithmic and concept design<br>Pablo Lee - misc.<br>"));
 }
 
 /**

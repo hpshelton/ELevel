@@ -9,6 +9,9 @@
 #include <QSplashScreen>
 #include <QTimer>
 #include <QPixmap>
+
+#include "defines.h"
+
 /**
  * Implements a splash screen for the program
  *
