@@ -20,7 +20,7 @@
 TestStat::TestStat() :
 	numAnswered(0), numCorrect(0), duration(0)
 {
-	this->date = time(NULL);
+	this->date = QDateTime::currentDateTime();
 }
 
 /**

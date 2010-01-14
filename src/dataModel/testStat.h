@@ -11,6 +11,7 @@
 #include <algorithm>
 
 #include <QList>
+#include <QDateTime>
 
 /**
  * Contains statistics for a single test of a {@link Deck}
@@ -30,7 +31,7 @@ protected:
 
 	// Date = new Date() sets it to the number of seconds since "epoch"
 	/** The date and time the test began */
-	time_t date;
+	QDateTime date;
 
 	/** The duration of this test in seconds */
 	int duration;
@@ -54,7 +55,7 @@ public:
 	 *
 	 * @return a <code>time_t</code> representing the date and time of this test
 	 */
-	time_t getDate()
+	QDateTime getDate()
 	{
 		return this->date;
 	}

@@ -64,6 +64,18 @@ public slots:
 	 */
 	void removeCurrentCard();
 
+	/**
+	 * Sets the previous <code>Card</code> in the <code>Deck</code> to the current card and displays it.
+	 * Wraps to the last card in the deck.
+	 */
+	void previousCard();
+
+	/**
+	 * Sets the next <code>Card</code> in the <code>Deck</code> to the current card and displays it.
+	 * Wraps to the first card in the deck.
+	 */
+	void nextCard();
+
 public:
 	/** The single instance of this class */
 	static ViewState* Instance()
@@ -201,18 +213,6 @@ public:
 	 * the current card is changed.
 	 */
 	void refreshCurrentCard();
-
-	/**
-	 * Sets the previous <code>Card</code> in the <code>Deck</code> to the current card and displays it.
-	 * Wraps to the last card in the deck.
-	 */
-	void previousCard();
-
-	/**
-	 * Sets the next <code>Card</code> in the <code>Deck</code> to the current card and displays it.
-	 * Wraps to the first card in the deck.
-	 */
-	void nextCard();
 };
 
 #endif // VIEWSTATE_H

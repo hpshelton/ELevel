@@ -8,6 +8,7 @@
 #include <QApplication>
 #include <QIcon>
 #include <QString>
+#include <QSettings>
 
 #include "mainWindow.h"
 #include "defines.h"
@@ -22,6 +23,10 @@
 int main(int argc, char** argv)
 {
 	Q_INIT_RESOURCE(ELevel);
+	QCoreApplication::setOrganizationName(ORGANIZATION_NAME);
+	QCoreApplication::setOrganizationDomain(ORGANIZATION_DOMAIN);
+	QCoreApplication::setApplicationName(PROGRAM_NAME);
+
 	QApplication elevel(argc, argv);
 	elevel.setWindowIcon(QIcon(":/images/icon.png"));
 

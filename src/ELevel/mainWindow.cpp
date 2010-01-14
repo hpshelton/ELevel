@@ -584,8 +584,8 @@ Deck MainWindow::getELevelChallengeDeck()
 {
 	Deck elvlDeck;
 
-	time_t currentDate = time(NULL);
-	time_t previousDate = time(NULL) - 604800000;
+	QDateTime currentDate = QDateTime::currentDateTime();
+	QDateTime previousDate = QDateTime::currentDateTime().addDays(-7);
 
 	foreach(Deck* deck, ViewState::Instance()->getDecks())
 	{

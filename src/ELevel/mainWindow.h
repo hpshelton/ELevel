@@ -23,6 +23,7 @@
 #include <QPrintDialog>
 #include <QPainter>
 #include <QFileDialog>
+#include <QDateTime>
 
 #include "viewState.h"
 //#include "deckTreeGUI.h"

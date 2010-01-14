@@ -7,8 +7,9 @@
 #define DEFINES_H_
 
 /** Program information */
-#define COMPANY_NAME "Johns Hopkins University"
-#define PROGRAM_NAME "E-Level"
+#define ORGANIZATION_NAME "Johns Hopkins University"
+#define ORGANIZATION_DOMAIN "cs.jhu.edu"
+#define PROGRAM_NAME "ELevel"
 #define VERSION "0.7"
 
 /** Fixed CardSection display size in pixels */
