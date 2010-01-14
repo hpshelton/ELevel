@@ -27,7 +27,7 @@
 #include "viewState.h"
 //#include "deckTreeGUI.h"
 //#include "deckTreeModel.h"
-//#include "cardAreaGui.h"
+#include "cardAreaGUI.h"
 #include "deck.h"
 #include "defines.h"
 
@@ -45,7 +45,6 @@ public:
 	 * Initializes a new MainWindow
 	 */
 	MainWindow(QList<QString> open);
-	MainWindow();
 
 private:
 	/** Tree widget for the deck of cards */
@@ -95,7 +94,7 @@ private:
 	QAction* deleteCardAction;
 
 	/** The central card area of the GUI */
-	//CardAreaGUI* cardArea;
+	CardAreaGUI* cardArea;
 
 	/**
 	 * Initializes the QActions required for MainWindow
@@ -128,7 +127,7 @@ private:
 	/**
 	 * Sets up the tree view of the {@link Card}s under the currently selected Deck using {@link CardAreaGUI}
 	 */
-	//void setupCardArea();
+	void setupCardArea();
 
 	/**
 	 * Returns a <code>Deck</code> containing all cards from open <code>Deck</code>s answered

@@ -5,11 +5,6 @@
  */
 #include "mainWindow.h"
 
-MainWindow::MainWindow()
-	:QMainWindow()
-{
-}
-
 /**
  * Initializes a new MainWindow
  */
@@ -55,7 +50,7 @@ MainWindow::MainWindow(QList<QString> open)
 	initializeToolBars();
 	toggleActions(NULL);
 	//setupDeckTree();
-	//setupCardArea();
+	setupCardArea();
 
 //	ViewState::Instance()->cardSelectedInTree.connect(this, "toggleActions(Card)");
 //
@@ -299,17 +294,17 @@ void MainWindow::toggleActions(Card* currentCard)
 //	this->addDockWidget(Qt::LeftDockWidgetArea, dockTreeWidget);
 //}
 
-///**
-// * Sets up the tree view of the {@link Card}s under the currently selected Deck using {@link CardAreaGUI}
-// */
-//void MainWindow::setupCardArea()
-//{
-//	Deck currentDeck = ViewState::Instance()->getCurrentDeck();
-//	if(&currentDeck != NULL && currentDeck.numCards() > 0)
-//		ViewState::Instance()->setCurrentCardAndDeck(currentDeck.getFirstCard(), currentDeck);
-//	this.cardArea = new CardAreaGUI(this);
-//	this->setCentralWidget(cardArea);
-//}
+/**
+ * Sets up the tree view of the {@link Card}s under the currently selected Deck using {@link CardAreaGUI}
+ */
+void MainWindow::setupCardArea()
+{
+	Deck* currentDeck = ViewState::Instance()->getCurrentDeck();
+	if(currentDeck != NULL && currentDeck->numCards() > 0)
+		ViewState::Instance()->setCurrentCardAndDeck(currentDeck->getFirstCard(), currentDeck);
+	this->cardArea = new CardAreaGUI(this);
+	this->setCentralWidget(cardArea);
+}
 
 /**
  * Displays an information box about the program

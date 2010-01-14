@@ -125,9 +125,9 @@ public:
 	/**
 	 * Return the <code>Pixmap</code> representation of this <code>CardSection</code>
 	 */
-	QPixmap* getImage()
+	QPixmap getImage()
 	{
-		return this->image;
+		return *(this->image);
 	}
 
 private:
