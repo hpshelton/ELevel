@@ -4,6 +4,7 @@
  * January 14, 2010
  */
 #include "preferencesGUI.h"
+#include <iostream>
 
 /**
  * Initializes a <code>PreferenceWindow</code> with the given parent
@@ -111,13 +112,13 @@ QWidget* PreferencesGUI::createProgramPreferences()
 	// Add checkbox for the splash screen
 	QCheckBox* splash = new QCheckBox(tr("Enable splash screen"));
 	splash->setChecked(this->prefs.value("Splash Screen", true).toBool());
-	QObject::connect(splash, SIGNAL(clicked(bool)), &prefs, SLOT(setShowSplashScreen(bool)));
+	QObject::connect(splash, SIGNAL(clicked(bool)), &(this->prefs), SLOT(setShowSplashScreen(bool)));
 	layout->addWidget(splash, 1, 0);
 
 	// Add checkbox for open previously open decks
 	QCheckBox* openPrevious = new QCheckBox(tr("Open previously open decks at startup"));
 	openPrevious->setChecked(this->prefs.value("Open Previous", true).toBool());
-	QObject::connect(openPrevious, SIGNAL(clicked(bool)), &prefs, SLOT(setOpenPrevious(bool)));
+	QObject::connect(openPrevious, SIGNAL(clicked(bool)), &(this->prefs), SLOT(setOpenPrevious(bool)));
 	layout->addWidget(openPrevious, 2, 0);
 
 	// Add text for default export location
@@ -139,66 +140,68 @@ QWidget* PreferencesGUI::createProgramPreferences()
  */
 QWidget* PreferencesGUI::createTestingPreferences()
 {
-	return new QWidget();
-}
+	QGridLayout* layout = new QGridLayout();
+	layout->addWidget(new QLabel("<b>Test Settings</b>"), 0, 0, 1, 2, Qt::AlignCenter | Qt::AlignTop);
 
-//	QGridLayout layout = new QGridLayout();
-//	layout.addWidget(new QLabel("<b>Test Settings</b>"), 0, 0, 1, 2, new Qt.Alignment(Qt.AlignmentFlag.AlignCenter, Qt.AlignmentFlag.AlignTop));
-//
-//	// Add checkbox for show timer
-//	PreferenceCheckBox showTimer = new PreferenceCheckBox(tr("Show the timer"), "SHOW_TIMER");
-//	showTimer.setChecked(Preferences.getInstance().getValue("SHOW_TIMER").equals("true"));
-//	showTimer.stateChange.connect(this, "updatePreference(String, boolean)");
-//	layout.addWidget(showTimer, 1, 0, Qt.AlignmentFlag.AlignTop);
-//
-//	// Add checkbox for show score
-//	PreferenceCheckBox showScore = new PreferenceCheckBox(tr("Show the current percent correct"), "SHOW_SCORE");
-//	showScore.setChecked(Preferences.getInstance().getValue("SHOW_SCORE").equals("true"));
-//	showScore.stateChange.connect(this, "updatePreference(String, boolean)");
-//	layout.addWidget(showScore, 2, 0, Qt.AlignmentFlag.AlignTop);
-//
-//	// Add checkbox for allow hints
-//	PreferenceCheckBox allowHints = new PreferenceCheckBox(tr("Allow hints"), "ALLOW_HINTS");
-//	allowHints.setChecked(Preferences.getInstance().getValue("ALLOW_HINTS").equals("true"));
-//	allowHints.stateChange.connect(this, "updatePreference(String, boolean)");
-//	layout.addWidget(allowHints, 3, 0, Qt.AlignmentFlag.AlignTop);
-//
-//	// Add checkbox for always show preferences
-//	PreferenceCheckBox alwaysShow = new PreferenceCheckBox(tr("Always show preferences on testing"), "SHOW_TEST_PREFERENCES");
-//	alwaysShow.setChecked(Preferences.getInstance().getValue("SHOW_TEST_PREFERENCES").equals("true"));
-//	alwaysShow.stateChange.connect(this, "updatePreference(String, boolean)");
-//	layout.addWidget(alwaysShow, 4, 0, Qt.AlignmentFlag.AlignTop);
-//
-//	// Add buttons to a button group associated with the algorithm preference
-//	QGroupBox box = new QGroupBox("Default Testing Algorithm");
-//	PreferenceButtonGroup prefGroup = new PreferenceButtonGroup("DEFAULT_ALGORITHM");
-//	QRadioButton sequential = new QRadioButton(tr("Sequential"));
-//	QRadioButton random = new QRadioButton(tr("Random"));
-//	QRadioButton probability = new QRadioButton(tr("Adaptive"));
-//	prefGroup.addButton(sequential);
-//	prefGroup.addButton(random);
-//	prefGroup.addButton(probability);
-//	// HPS - Terrible hack because button(#) returns only null
-//	prefGroup.buttons().get(Algorithm.valueOf(Preferences.getInstance().getValue("DEFAULT_ALGORITHM")).ordinal()).setChecked(true);
-//
-//	// Add buttons for default algorithms
-//	PreferenceCheckBox repeat = new PreferenceCheckBox(tr("Repeat cards"), "REPEAT_CARDS");
-//	repeat.setChecked(Preferences.getInstance().getValue("REPEAT_CARDS").equals("true"));
-//	repeat.stateChange.connect(this, "updatePreference(String, boolean)");
-//
-//	QVBoxLayout algorithmLayout = new QVBoxLayout();
-//	algorithmLayout.addWidget(sequential);
-//	algorithmLayout.addWidget(random);
-//	algorithmLayout.addWidget(probability);
-//	algorithmLayout.addWidget(repeat);
-//	box.setLayout(algorithmLayout);
-//	prefGroup.stateChange.connect(this, "updatePreference(String, String)");
-//	layout.addWidget(box, 1, 1, 4, 1);
-//
-//	QWidget testingPage = new QWidget();
-//	testingPage.setLayout(layout);
-//	return testingPage;
-//}
+	// Add checkbox for show timer
+	QCheckBox* showTimer = new QCheckBox(tr("Show the timer"));
+	showTimer->setChecked(prefs.value("Show Timer", true).toBool());
+	QObject::connect(showTimer, SIGNAL(clicked(bool)), &(this->prefs), SLOT(setShowTimer(bool)));
+	layout->addWidget(showTimer, 1, 0, Qt::AlignTop);
+
+	// Add checkbox for show score
+	QCheckBox* showScore = new QCheckBox(tr("Show the current percent correct"));
+	showScore->setChecked(prefs.value("Show Score", true).toBool());
+	QObject::connect(showScore, SIGNAL(clicked(bool)), &(this->prefs), SLOT(setShowScore(bool)));
+	layout->addWidget(showScore, 2, 0, Qt::AlignTop);
+
+	// Add checkbox for allow hints
+	QCheckBox* showHints = new QCheckBox(tr("Show hints"));
+	showHints->setChecked(prefs.value("Show hints", true).toBool());
+	QObject::connect(showHints, SIGNAL(clicked(bool)), &(this->prefs), SLOT(setShowHints(bool)));
+	layout->addWidget(showHints, 3, 0, Qt::AlignTop);
+
+	// Add checkbox for always show preferences
+	QCheckBox* alwaysShow = new QCheckBox(tr("Always show preferences on testing"));
+	alwaysShow->setChecked(prefs.value("Always Show Preferences", true).toBool());
+	QObject::connect(alwaysShow, SIGNAL(clicked(bool)), &(this->prefs), SLOT(setAlwaysShowPreferences(bool)));
+	layout->addWidget(alwaysShow, 4, 0, Qt::AlignTop);
+
+	// Default algorithm buttons
+	QGroupBox* box = new QGroupBox("Default Testing Algorithm");
+	QButtonGroup* buttons = new QButtonGroup();
+
+	QRadioButton* sequential = new QRadioButton(tr("Sequential"));
+	QRadioButton* random = new QRadioButton(tr("Random"));
+	QRadioButton* adaptive = new QRadioButton(tr("Adapative"));
+	buttons->addButton(sequential);
+	buttons->setId(sequential, 1);
+	buttons->addButton(random);
+	buttons->setId(random, 2);
+	buttons->addButton(adaptive);
+	buttons->addButton(adaptive, 3);
+	buttons->setExclusive(true);
+	int id = prefs.value("Default Algorithm").toInt();
+	buttons->button((id > 0) ? id : 1)->setChecked(true);
+	QObject::connect(buttons, SIGNAL(buttonClicked(int)), &(this->prefs), SLOT(setAlgorithm(int)));
+
+	// Algorithm options
+	QCheckBox* repeat = new QCheckBox(tr("Repeat cards"));
+	repeat->setChecked(prefs.value("Repeat Cards").toBool());
+	QObject::connect(repeat, SIGNAL(clicked(bool)), &(this->prefs), SLOT(setRepeatCards(bool)));
+
+	QVBoxLayout* algorithmLayout = new QVBoxLayout();
+	algorithmLayout->addWidget(sequential);
+	algorithmLayout->addWidget(random);
+	algorithmLayout->addWidget(adaptive);
+	algorithmLayout->addWidget(repeat);
+	box->setLayout(algorithmLayout);
+	layout->addWidget(box, 1, 1, 4, 1);
+
+	QWidget* testingPage = new QWidget();
+	testingPage->setLayout(layout);
+	return testingPage;
+}
 
 /**
  * Restores the preferences to a set of default values

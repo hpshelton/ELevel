@@ -18,6 +18,9 @@
 #include <QCheckBox>
 #include <QPushButton>
 #include <QWidget>
+#include <QButtonGroup>
+#include <QGroupBox>
+#include <QRadioButton>
 
 #include "preferences.h"
 

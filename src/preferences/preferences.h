@@ -59,7 +59,7 @@ public slots:
 	void setShowHints(bool b) { QSettings::setValue("Show Hints", b); };
 	void setShowScore(bool b) { QSettings::setValue("Show Score", b); };
 	void setAlwaysShowPreferences(bool b) { QSettings::setValue("Always Show Preferences", b); };
-	void setAlgorithm(int a) { QSettings::setValue("Default Algorithm", a); }; // TODO - change to ALgorithm Enum?
+	void setAlgorithm(int a) { QSettings::setValue("Default Algorithm", a); };
 	void setRepeatCards(bool b) { QSettings::setValue("Repeat Cards", b); };
 };
 
