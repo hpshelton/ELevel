@@ -10,6 +10,7 @@
 #include <QList>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
+#include <QXmlStreamAttribute>
 #include <QFile>
 #include <stdlib.h>
 

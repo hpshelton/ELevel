@@ -233,22 +233,51 @@ void Deck::shuffle()
  */
 Deck* Deck::readFromDisk(QString filepath)
 {
-	QFile file(filepath);
-	if(file.exists() && file.isOpen())
-	{
-		QXmlStreamReader reader(&file);
+	Deck* deck = NULL;
+	if(filepath.isEmpty())
+		return deck;
 
-//		Deck d = (Deck) in.readObject();
-//
-//		if(d != null)
-//		{
-//			d.setDiskLocation(filepath);
-//			d.setHasChanged(false);
-//		}
-//		return d;
+	QFile file(filepath);
+	if(!file.open(QIODevice::ReadOnly))
+	{
+		// Error
+		return deck;
 	}
-	// Throw Error
-	return NULL;
+
+	QXmlStreamReader reader(&file);
+	if(reader.readNextStartElement())
+	{
+		if(reader.name() != "ELevel" && reader.attributes().value("version") != VERSION)
+		{
+			// TODO - Handle older version files
+			return NULL;
+		}
+	}
+	while(reader.readNextStartElement())
+	{
+		if(reader.name() == "Deck")
+		{
+			deck = new Deck();
+			deck->setName(reader.attributes().value("deckname").toString());
+			deck->cardIdIterator = reader.attributes().value("cardiditerator").toString().toInt();
+		}
+		else if(reader.name() == "Card");
+			// deck->addCard(Card::readFromDisk(reader));
+		else if(reader.name() == "Test Statistic");
+			// deck->addCard(TestStat::readFromDisk(reader));
+		else
+		{
+			// Error
+			return NULL;
+		}
+	}
+
+	if(deck != NULL)
+	{
+		deck->setDiskLocation(filepath);
+		deck->setHasChanged(false);
+	}
+	return deck;
 }
 
 void Deck::writeToDisk(Deck* d)
@@ -270,18 +299,16 @@ void Deck::writeToDisk(Deck* d)
 	QXmlStreamWriter writer(&file);
 	writer.setAutoFormatting(true);
 	writer.writeStartDocument();
+	writer.writeStartElement("ELevel");
+	writer.writeAttribute("version", QString("%1").arg(VERSION));
 	writer.writeStartElement("Deck");
-	writer.writeAttribute("Name", d->getName());
-	writer.writeAttribute("CardIdIterator", QString(d->getUnusedID() - 1));
-	writer.writeStartElement("Cards");
+	writer.writeAttribute("deckname", d->getName());
+	writer.writeAttribute("cardiditerator", QString("%1").arg(d->cardIdIterator));
+	writer.writeEndElement();
 //	foreach(Card* c, d->getCards())
 //		Card::writeToDisk(c);
-	writer.writeEndElement();
-	writer.writeStartElement("Test Statistics");
 //	foreach(TestStat* t, d->getTestStatistics())
 //		TestStat::writeToDisk(t);
-	writer.writeEndElement();
-	writer.writeEndElement();
 	writer.writeEndDocument();
 
 	file.close();

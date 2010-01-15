@@ -17,7 +17,7 @@
 void ViewState::addDeckAtIndex(Deck* deck, int index)
 {
 	// TODO: Make sure you only have 1 deck of a type
-	if(deck->getName() == "")
+	if(deck == NULL || deck->getName() == "")
 		return;
 
 	this->currentDeck = deck;

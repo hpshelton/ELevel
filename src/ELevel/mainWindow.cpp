@@ -313,13 +313,15 @@ void MainWindow::newDeck()
  */
 void MainWindow::openDeck()
 {
-//	QString filepath = QFileDialog.getOpenFileName(this, tr("Open Deck"), (QString) Preferences.getInstance().getValue("DEFAULT_EXPORT_LOCATION"), new Filter("*.elvl"));
-//	if(filepath == NULL || filepath = "")
-//		return;
-//
-//	Deck deck = Deck.readFromDisk(filepath);
-//	// TODO - check for already open decks
-//	ViewState::Instance()->addDeck(deck);
+	Preferences prefs;
+	QString filepath = QFileDialog::getOpenFileName(this, tr("Open Deck"), prefs.value("Default Export Location").toString(), "*.elvl");
+	if(filepath.isEmpty())
+		return;
+
+	Deck* deck = Deck::readFromDisk(filepath);
+	// TODO - check for already open decks
+	if(deck != NULL)
+		ViewState::Instance().addDeck(deck);
 }
 
 /**
@@ -339,11 +341,13 @@ void MainWindow::saveDeck()
  */
 void MainWindow::saveDeckAs()
 {
-//	QString filepath = QFileDialog.getSaveFileName(this, tr("Save Deck"), (QString) Preferences.getInstance().getValue("DEFAULT_EXPORT_LOCATION"), new Filter("*.elvl"));
-//	if(filepath == Null || filepath == "")
-//		return;
-//
-//	ViewState::Instance()->getCurrentDeck().writeToDisk(filepath);
+	Preferences prefs;
+	QString filepath = QFileDialog::getSaveFileName(this, tr("Save Deck"), prefs.value("Default Export Location").toString(), "*.elvl");
+	if(filepath.isEmpty())
+		return;
+	Deck* deck = ViewState::Instance().getCurrentDeck();
+	deck->setDiskLocation(filepath);
+	Deck::writeToDisk(deck);
 }
 
 /**
