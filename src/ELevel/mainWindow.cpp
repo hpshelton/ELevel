@@ -11,39 +11,23 @@
 MainWindow::MainWindow(QList<QString> open)
 	: QMainWindow()
 {
-//	bool isFirstDeck = true;
-//	Deck firstDeck;
+	Deck firstDeck;
+	Preferences prefs;
 
-//	if(Preferences.getInstance().getValue("OPEN_PREVIOUS") && &open != NULL && open.size() != 0)
-//	{
-//		foreach(QString s, open)
-//		{
-//			std::ifstream f;
-//			f.open(s, ios::in);
-//
-//			if(f.is_open())
-//			{
-//				Deck d = Deck.readFromDisk(s);
-//				if(&d != NULL)
-//				{
+	if(prefs.value("Open Previous").toBool())
+	{
+		foreach(QString s, open)
+		{
+			QFile* f = new QFile(s);
+			if(f->exists() && f->isOpen())
+			{
+				QXmlStreamReader* reader = new QXmlStreamReader(f);
+//				Deck* d = Deck::readFromDisk(reader);
+//				if(d != NULL)
 //					ViewState::Instance()->addDeck(d);
-//
-//					if(isFirstDeck)
-//					{
-//						firstDeck = d;
-//						isFirstDeck = false;
-//					}
-//				}
-//			}
-//		}
-//
-//		if(ViewState::Instance()->getDecks().size() > 0)
-//		{
-//			Deck currentDeck = ViewState::Instance()->getDecks().at(0);
-//			ViewState::Instance()->setCurrentCardAndDeck(currentDeck.getFirstCard(), currentDeck);
-//			ViewState::Instance()->setCurrentDeck(currentDeck);
-//		}
-//	}
+			}
+		}
+	}
 
 	initializeActions();
 	initializeMenuBar();
@@ -52,12 +36,15 @@ MainWindow::MainWindow(QList<QString> open)
 	//setupDeckTree();
 	setupCardArea();
 
-//	ViewState::Instance()->cardSelectedInTree.connect(this, "toggleActions(Card)");
-//
-//	if(&firstDeck != NULL)
-//	{
-//		treeView->selectDeck(firstDeck, NULL);
-//	}
+	QObject::connect(ViewState::Instance(), SIGNAL(cardSelectedInTree(Card*)), this, SLOT(toggleActions(Card*)));
+
+	if(ViewState::Instance()->getDecks().size() > 0)
+	{
+		Deck* currentDeck = ViewState::Instance()->getDecks().at(0);
+		ViewState::Instance()->setCurrentCardAndDeck(currentDeck->getFirstCard(), currentDeck);
+		ViewState::Instance()->setCurrentDeck(currentDeck);
+		//treeView->selectDeck(currentDeck, NULL);
+	}
 }
 
 /**
@@ -319,11 +306,11 @@ void MainWindow::aboutELevel()
  */
 void MainWindow::newDeck()
 {
-//	DeckDialog* open = new DeckDialog(this);
-//	open->setWindowTitle("New Deck");
-//	open->setWindowIcon(this->windowIcon());
-//	QObject::connect(open, SIGNAL(closing), ViewState::Instance(), SLOT(addDeck(Deck)));
-//	open->show();
+	DeckDialog* newDeck = new DeckDialog(this);
+	newDeck->setWindowTitle("New Deck");
+	newDeck->setWindowIcon(this->windowIcon());
+	QObject::connect(newDeck, SIGNAL(closing(Deck*)), ViewState::Instance(), SLOT(addDeck(Deck*)));
+	newDeck->show();
 }
 
 /**

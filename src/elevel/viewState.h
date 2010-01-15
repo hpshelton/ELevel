@@ -50,6 +50,18 @@ signals:
 
 public slots:
 	/**
+	 * Adds {@link Deck} to the set of decks at the end of the list.
+	 * Doesn't add a deck without a name.
+	 *
+	 * @param deck
+	 *        the new <code>deck</code> to be added
+	 */
+	void addDeck(Deck* deck)
+	{
+		addDeckAtIndex(deck, decks.size());
+	}
+
+	/**
 	 * Shuffles the deck list
 	 */
 	void shuffleCurrentDeck();
@@ -94,18 +106,6 @@ public:
 	 *        the position at which to add the deck
 	 */
 	void addDeckAtIndex(Deck* deck, int index);
-
-	/**
-	 * Adds {@link Deck} to the set of decks at the end of the list.
-	 * Doesn't add a deck without a name.
-	 *
-	 * @param deck
-	 *        the new <code>deck</code> to be added
-	 */
-	void addDeck(Deck* deck)
-	{
-		addDeckAtIndex(deck, decks.size());
-	}
 
 	/**
 	 * Removes {@link Deck} from the deck list

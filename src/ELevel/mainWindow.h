@@ -6,9 +6,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <iostream>
-#include <time.h>
-
 #include <QMainWindow>
 #include <QDockWidget>
 #include <QMenuBar>
@@ -24,6 +21,7 @@
 #include <QPainter>
 #include <QFileDialog>
 #include <QDateTime>
+#include <QXmlStreamReader>
 
 #include "viewState.h"
 //#include "deckTreeGUI.h"
@@ -32,6 +30,7 @@
 #include "deck.h"
 #include "defines.h"
 #include "preferencesGUI.h"
+#include "deckDialog.h"
 
 /**
  * Main window that calls the other subunits for the program.
@@ -114,14 +113,6 @@ private:
 	void initializeToolBars();
 
 	/**
-	 * Enables and disables the menu and toolbar items by checking whether
-	 * they should be available to the user or not.
-	 *
-	 * @param currentCard
-	 */
-	void toggleActions(Card* currentCard);
-
-	/**
 	 * Sets up the basic tree view of the {@link Deck}s using the {@link DeckTreeModel}
 	 */
 	//void setupDeckTree();
@@ -149,6 +140,14 @@ private:
 	bool displaySaveDeckPrompt(Deck* d);
 
 private slots:
+	/**
+	 * Enables and disables the menu and toolbar items by checking whether
+	 * they should be available to the user or not.
+	 *
+	 * @param currentCard
+	 */
+	void toggleActions(Card* currentCard);
+
 	/**
 	 * Displays an information box about the program
 	 */

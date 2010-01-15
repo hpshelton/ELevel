@@ -4,45 +4,47 @@
 TEMPLATE = app
 TARGET = ELevel
 DEPENDPATH += . \
-	src/dataModel \
-	src/editCard \
-	src/elevel
+    src/dataModel \
+    src/editCard \
+    src/elevel
 INCLUDEPATH += . \
-	src/dataModel \
-	src/editCard \
-	src/elevel/ \
-	src/preferences/ \
-	src/
+    src/dataModel \
+    src/editCard \
+    src/elevel/ \
+    src/preferences/ \
+    src/
 OBJECTS_DIR = ./obj
 MOC_DIR = ./obj
 RCC_DIR = ./obj
 
 # Input
 HEADERS += src/defines.h \
-	src/dataModel/card.h \
-	src/dataModel/cardSection.h \
-	src/dataModel/deck.h \
-	src/dataModel/testStat.h \
-	src/editCard/drawingGraphicsScene.h \
-	src/editCard/drawingGraphicsView.h \
-	src/elevel/mainWindow.h \
-	src/elevel/viewState.h \
-	src/elevel/cardAreaGUI.h \
-	src/elevel/splashScreen.h \
-	src/preferences/preferences.h \
-	src/preferences/algorithm.h \
-	src/preferences/preferencesGUI.h
+    src/dataModel/card.h \
+    src/dataModel/cardSection.h \
+    src/dataModel/deck.h \
+    src/dataModel/testStat.h \
+    src/editCard/drawingGraphicsScene.h \
+    src/editCard/drawingGraphicsView.h \
+    src/elevel/mainWindow.h \
+    src/elevel/viewState.h \
+    src/elevel/cardAreaGUI.h \
+    src/elevel/splashScreen.h \
+    src/preferences/preferences.h \
+    src/preferences/algorithm.h \
+    src/preferences/preferencesGUI.h \
+    src/elevel/deckDialog.h
 SOURCES += src/dataModel/card.cpp \
-	src/dataModel/cardSection.cpp \
-	src/dataModel/deck.cpp \
-	src/dataModel/testStat.cpp \
-	src/elevel/elevel.cpp \
-	src/elevel/mainWindow.cpp \
-	src/elevel/viewState.cpp \
-	src/editCard/drawingGraphicsView.cpp \
-	src/elevel/cardAreaGUI.cpp \
-	src/elevel/splashScreen.cpp \
-	src/preferences/preferences.cpp \
-	src/preferences/preferencesGUI.cpp
+    src/dataModel/cardSection.cpp \
+    src/dataModel/deck.cpp \
+    src/dataModel/testStat.cpp \
+    src/elevel/elevel.cpp \
+    src/elevel/mainWindow.cpp \
+    src/elevel/viewState.cpp \
+    src/editCard/drawingGraphicsView.cpp \
+    src/elevel/cardAreaGUI.cpp \
+    src/elevel/splashScreen.cpp \
+    src/preferences/preferences.cpp \
+    src/preferences/preferencesGUI.cpp \
+    src/elevel/deckDialog.cpp
 RESOURCES += src/ELevel.qrc
 macx:ICON = images/icon.icns
