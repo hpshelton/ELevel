@@ -21,7 +21,6 @@
 #include <QPainter>
 #include <QFileDialog>
 #include <QDateTime>
-#include <QXmlStreamReader>
 
 #include "viewState.h"
 //#include "deckTreeGUI.h"

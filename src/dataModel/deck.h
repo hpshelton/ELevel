@@ -8,8 +8,9 @@
 
 #include <QString>
 #include <QList>
-#include <algorithm>
-#include <cstdlib>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
+#include <QFile>
 #include <stdlib.h>
 
 #include "card.h"
@@ -295,36 +296,15 @@ public:
 	 *        A <code>String</code> representing the absolute path file name of the file
 	 * @return a {@link Deck} created from the specified file
 	 */
-	//public static Deck readFromDisk(String filepath) throws FileNotFoundException, IOException, ClassNotFoundException
-	//	{
-	//		ObjectInputStream in = new ObjectInputStream(new FileInputStream(filepath));
-	//		Deck d = (Deck) in.readObject();
-	//		in.close();
-	//
-	//		if(d != null)
-	//		{
-	//			d.setDiskLocation(filepath);
-	//			d.setHasChanged(false);
-	//		}
-	//		return d;
-	//	}
-	//
-	//	/**
-	//	 * Export the contents of this <code>Deck</code> to disk
-	//	 *
-	//	 * @param filepath
-	//	 *        A <code>String</code> representing the absolute path file name of the file
-	//	 */
-	//	public void writeToDisk(String filepath) throws IOException
-	//	{
-	//		if(!filepath.endsWith(".elvl"))
-	//			filepath += ".elvl";
-	//			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filepath));
-	//			this.diskLocation = new String(filepath);
-	//			this.hasChanged = false;
-	//			out.writeObject(this);
-	//			out.close();
-	//			}
+	static Deck* readFromDisk(QString filepath);
+
+	/**
+	 * Export the contents of this <code>Deck</code> to disk
+	 *
+	 * @param filepath
+	 *        A <code>String</code> representing the absolute path file name of the file
+	 */
+	static void writeToDisk(Deck* deck);
 
 private:
 	void init(QString name);

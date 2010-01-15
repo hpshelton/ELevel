@@ -26,8 +26,9 @@ private:
 	 * A private constructor to initialize the class. Called only once by itself
 	 */
 	ViewState() {};
-	ViewState(const ViewState&) {};
-	ViewState& operator=(const ViewState&) {};
+	ViewState(const ViewState&) : QObject() {};
+	ViewState& operator=(const ViewState&);
+	~ViewState() {};
 
 protected:
 	/** The list of decks */
@@ -90,10 +91,10 @@ public slots:
 
 public:
 	/** The single instance of this class */
-	static ViewState* Instance()
+	static ViewState& Instance()
 	{
 	  static ViewState singleton;
-	  return &singleton;
+	  return singleton;
 	}
 
 	/**

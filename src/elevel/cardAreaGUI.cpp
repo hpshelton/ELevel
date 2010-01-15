@@ -14,18 +14,18 @@
 CardAreaGUI::CardAreaGUI(QWidget* parent)
 	: QWidget(parent)
 {
-	QObject::connect(ViewState::Instance(), SIGNAL(cardSelectedInTree(Card*)), this, SLOT(displayCard(Card*)));
+	QObject::connect(&ViewState::Instance(), SIGNAL(cardSelectedInTree(Card*)), this, SLOT(displayCard(Card*)));
 
 	this->setMinimumSize(CARD_AREA_WIDTH, CARD_AREA_HEIGHT);
 	this->gridLayout = new QGridLayout(this);
 	this->setLayout(this->gridLayout);
 
 	QPushButton* previousButton = new QPushButton(tr("Previous"), this);
-	QObject::connect(previousButton, SIGNAL(clicked()), ViewState::Instance(), SLOT(previousCard()));
+	QObject::connect(previousButton, SIGNAL(clicked()), &ViewState::Instance(), SLOT(previousCard()));
 	this->gridLayout->addWidget(previousButton, 2, 0, Qt::AlignLeft);
 
 	QPushButton* nextButton = new QPushButton(tr("Next"), this);
-	QObject::connect(nextButton, SIGNAL(clicked()), ViewState::Instance(), SLOT(nextCard()));
+	QObject::connect(nextButton, SIGNAL(clicked()), &ViewState::Instance(), SLOT(nextCard()));
 	this->gridLayout->addWidget(nextButton, 2, 1, Qt::AlignRight);
 
 	QLabel* questionLabel = new QLabel(tr("Question"));
@@ -46,10 +46,10 @@ CardAreaGUI::CardAreaGUI(QWidget* parent)
 	this->logoImage->setHidden(true);
 	this->gridLayout->addWidget(logoImage, 0, 0, 5, 2, Qt::AlignCenter);
 
-	if(ViewState::Instance()->getNumDecks() == 0)
+	if(ViewState::Instance().getNumDecks() == 0)
 		displayLogo(true);
 	else
-		displayCard(ViewState::Instance()->getCurrentCard());
+		displayCard(ViewState::Instance().getCurrentCard());
 }
 
 

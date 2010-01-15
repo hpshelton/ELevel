@@ -41,7 +41,7 @@ void Deck::addCard(Card* c)
 {
 	this->deckHasChanged = true;
 	assignValidCardID(c);
-	cards.push_back(c);
+	cards.append(c);
 }
 
 /**
@@ -85,7 +85,7 @@ void Deck::addCards(QList<Card*> c)
 void Deck::addTestStat(TestStat* t)
 {
 	this->deckHasChanged = true;
-	this->testStats.push_back(t);
+	this->testStats.append(t);
 }
 
 void Deck::assignValidCardID(Card* c)
@@ -150,7 +150,6 @@ Card* Deck::getCardWithID(int id)
  *
  * @param c
  *        the {@link Card} to be removed from the <code>Deck</code>, if it is present
- * @see java.util.Collection#remove(Object)
  */
 void Deck::removeCard(Card* c)
 {
@@ -224,3 +223,67 @@ void Deck::shuffle()
 //		r += testStats[index]->toString();
 //	return r;
 //}
+
+/**
+ * Read a <code>Deck</code> from disk given an absolute file name
+ *
+ * @param filepath
+ *        A <code>String</code> representing the absolute path file name of the file
+ * @return a {@link Deck} created from the specified file
+ */
+Deck* Deck::readFromDisk(QString filepath)
+{
+	QFile file(filepath);
+	if(file.exists() && file.isOpen())
+	{
+		QXmlStreamReader reader(&file);
+
+//		Deck d = (Deck) in.readObject();
+//
+//		if(d != null)
+//		{
+//			d.setDiskLocation(filepath);
+//			d.setHasChanged(false);
+//		}
+//		return d;
+	}
+	// Throw Error
+	return NULL;
+}
+
+void Deck::writeToDisk(Deck* d)
+{
+	QString filepath = d->getDiskLocation();
+	if(!filepath.endsWith(".elvl"))
+		filepath += ".elvl";
+
+	QFile file(filepath);
+	if(file.exists())
+	{
+		// Some prompt for overwrite?
+	}
+	if(!file.open(QIODevice::WriteOnly))
+	{
+		// Error
+	}
+
+	QXmlStreamWriter writer(&file);
+	writer.setAutoFormatting(true);
+	writer.writeStartDocument();
+	writer.writeStartElement("Deck");
+	writer.writeAttribute("Name", d->getName());
+	writer.writeAttribute("CardIdIterator", QString(d->getUnusedID() - 1));
+	writer.writeStartElement("Cards");
+//	foreach(Card* c, d->getCards())
+//		Card::writeToDisk(c);
+	writer.writeEndElement();
+	writer.writeStartElement("Test Statistics");
+//	foreach(TestStat* t, d->getTestStatistics())
+//		TestStat::writeToDisk(t);
+	writer.writeEndElement();
+	writer.writeEndElement();
+	writer.writeEndDocument();
+
+	file.close();
+	d->setHasChanged(false);
+}

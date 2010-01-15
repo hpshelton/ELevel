@@ -18,14 +18,9 @@ MainWindow::MainWindow(QList<QString> open)
 	{
 		foreach(QString s, open)
 		{
-			QFile* f = new QFile(s);
-			if(f->exists() && f->isOpen())
-			{
-				QXmlStreamReader* reader = new QXmlStreamReader(f);
-//				Deck* d = Deck::readFromDisk(reader);
-//				if(d != NULL)
-//					ViewState::Instance()->addDeck(d);
-			}
+			Deck* d = Deck::readFromDisk(s);
+			if(d != NULL)
+				ViewState::Instance().addDeck(d);
 		}
 	}
 
@@ -36,13 +31,13 @@ MainWindow::MainWindow(QList<QString> open)
 	//setupDeckTree();
 	setupCardArea();
 
-	QObject::connect(ViewState::Instance(), SIGNAL(cardSelectedInTree(Card*)), this, SLOT(toggleActions(Card*)));
+	QObject::connect(&ViewState::Instance(), SIGNAL(cardSelectedInTree(Card*)), this, SLOT(toggleActions(Card*)));
 
-	if(ViewState::Instance()->getDecks().size() > 0)
+	if(ViewState::Instance().getDecks().size() > 0)
 	{
-		Deck* currentDeck = ViewState::Instance()->getDecks().at(0);
-		ViewState::Instance()->setCurrentCardAndDeck(currentDeck->getFirstCard(), currentDeck);
-		ViewState::Instance()->setCurrentDeck(currentDeck);
+		Deck* currentDeck = ViewState::Instance().getDecks().at(0);
+		ViewState::Instance().setCurrentCardAndDeck(currentDeck->getFirstCard(), currentDeck);
+		ViewState::Instance().setCurrentDeck(currentDeck);
 		//treeView->selectDeck(currentDeck, NULL);
 	}
 }
@@ -71,12 +66,12 @@ void MainWindow::initializeActions()
 
 	this->deleteCardAction = new QAction(tr("Delete Card"), this);
 	this->deleteCardAction->setStatusTip(tr("Delete Selected Card"));
-	QObject::connect(this->deleteCardAction, SIGNAL(triggered()), ViewState::Instance(), SLOT(removeCurrentCard()));
+	QObject::connect(this->deleteCardAction, SIGNAL(triggered()), &ViewState::Instance(), SLOT(removeCurrentCard()));
 	actions.push_back(this->deleteCardAction);
 
 	this->duplicateCardAction = new QAction(tr("Duplicate Card"), this);
 	this->duplicateCardAction->setStatusTip(tr("Duplicate the Selected Card"));
-	QObject::connect(this->duplicateCardAction, SIGNAL(triggered()), ViewState::Instance(), SLOT(duplicateCard()));
+	QObject::connect(this->duplicateCardAction, SIGNAL(triggered()), &ViewState::Instance(), SLOT(duplicateCard()));
 	actions.push_back(this->duplicateCardAction);
 
 	this->saveDeckAction = new QAction(QIcon(":/images/save.png"), tr("Save"), this);
@@ -104,7 +99,7 @@ void MainWindow::initializeActions()
 
 	this->shuffleAction = new QAction(tr("Shuffle"), this);
 	this->shuffleAction->setStatusTip(tr("Shuffle Current Deck"));
-	QObject::connect(this->shuffleAction, SIGNAL(triggered()), ViewState::Instance(), SLOT(shuffleCurrentDeck()));
+	QObject::connect(this->shuffleAction, SIGNAL(triggered()), &ViewState::Instance(), SLOT(shuffleCurrentDeck()));
 	actions.push_back(this->shuffleAction);
 
 	this->aboutELevelAction = new QAction(tr("About E-Level"), this);
@@ -226,12 +221,12 @@ void MainWindow::toggleActions(Card* currentCard)
 	bool deckEnabled = true;
 	bool cardEnabled = true;
 
-	if(ViewState::Instance()->getNumDecks() == 0)
+	if(ViewState::Instance().getNumDecks() == 0)
 	{
 		cardEnabled = false;
 		deckEnabled = false;
 	}
-	else if(ViewState::Instance()->getNumDecks() == 1 && ViewState::Instance()->getCurrentDeck()->numCards() == 0)
+	else if(ViewState::Instance().getNumDecks() == 1 && ViewState::Instance().getCurrentDeck()->numCards() == 0)
 	{
 		deckEnabled = false;
 	}
@@ -286,9 +281,9 @@ void MainWindow::toggleActions(Card* currentCard)
  */
 void MainWindow::setupCardArea()
 {
-	Deck* currentDeck = ViewState::Instance()->getCurrentDeck();
+	Deck* currentDeck = ViewState::Instance().getCurrentDeck();
 	if(currentDeck != NULL && currentDeck->numCards() > 0)
-		ViewState::Instance()->setCurrentCardAndDeck(currentDeck->getFirstCard(), currentDeck);
+		ViewState::Instance().setCurrentCardAndDeck(currentDeck->getFirstCard(), currentDeck);
 	this->cardArea = new CardAreaGUI(this);
 	this->setCentralWidget(cardArea);
 }
@@ -309,7 +304,7 @@ void MainWindow::newDeck()
 	DeckDialog* newDeck = new DeckDialog(this);
 	newDeck->setWindowTitle("New Deck");
 	newDeck->setWindowIcon(this->windowIcon());
-	QObject::connect(newDeck, SIGNAL(closing(Deck*)), ViewState::Instance(), SLOT(addDeck(Deck*)));
+	QObject::connect(newDeck, SIGNAL(closing(Deck*)), &ViewState::Instance(), SLOT(addDeck(Deck*)));
 	newDeck->show();
 }
 
@@ -332,11 +327,11 @@ void MainWindow::openDeck()
  */
 void MainWindow::saveDeck()
 {
-	QString filepath = ViewState::Instance()->getCurrentDeck()->getDiskLocation();
+	QString filepath = ViewState::Instance().getCurrentDeck()->getDiskLocation();
 	if(filepath.isEmpty())
 		saveDeckAs();
-//	else
-//		ViewState::Instance()->getCurrentDeck().writeToDisk(filepath);
+	else
+		Deck::writeToDisk(ViewState::Instance().getCurrentDeck());
 }
 
 /**
@@ -459,7 +454,7 @@ void MainWindow::setPreferences()
  */
 void MainWindow::newCard()
 {
-	ViewState::Instance()->addCard(new Card());
+	ViewState::Instance().addCard(new Card());
 	editCard();
 }
 
@@ -468,11 +463,11 @@ void MainWindow::newCard()
  */
 void MainWindow::closeDeck()
 {
-	Deck* d = ViewState::Instance()->getCurrentDeck();
+	Deck* d = ViewState::Instance().getCurrentDeck();
 	if(d->hasChanged())
 		if(!displaySaveDeckPrompt(d))
 			return;
-	ViewState::Instance()->removeDeck(d);
+	ViewState::Instance().removeDeck(d);
 }
 
 /**
@@ -574,7 +569,7 @@ Deck MainWindow::getELevelChallengeDeck()
 	QDateTime currentDate = QDateTime::currentDateTime();
 	QDateTime previousDate = QDateTime::currentDateTime().addDays(-7);
 
-	foreach(Deck* deck, ViewState::Instance()->getDecks())
+	foreach(Deck* deck, ViewState::Instance().getDecks())
 	{
 		foreach(TestStat* stat, deck->getTestStatistics())
 		{
@@ -604,7 +599,7 @@ void MainWindow::closeEvent(QCloseEvent e)
 //	else
 //		Preferences.getInstance().writeSettings();
 
-	foreach(Deck* d, ViewState::Instance()->getDecks())
+	foreach(Deck* d, ViewState::Instance().getDecks())
 	{
 		if(d->hasChanged())
 		{

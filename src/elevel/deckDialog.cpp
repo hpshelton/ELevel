@@ -77,21 +77,18 @@ void DeckDialog::changeExportLocation()
 	QString initialPath = prefs.value("Default Export Location").toString();
 	QString path = QFileDialog::getExistingDirectory(this, tr("Deck Export Directory"), initialPath);
 	if(path.isEmpty())
-	{
 		this->exportDir = initialPath;
-	}
 	else
-	{
-		if(!path.endsWith("/"))
-			path = path + "/";
 		this->exportDir = path;
-	}
 }
 
 void DeckDialog::accept()
 {
 	Deck* deck = new Deck(this->nameEdit->text());
-	deck->setDiskLocation(this->exportDir + "/" + deck->getName() + ".elvl");
+	QString path = this->exportDir;
+	if(!path.endsWith("/"))
+		path = path + "/";
+	deck->setDiskLocation(path + deck->getName() + ".elvl");
 	emit closing(deck);
 	QDialog::accept();
 };
