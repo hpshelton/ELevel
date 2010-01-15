@@ -76,7 +76,7 @@ public slots:
 	void changeExportLocation()
 	{
 		PreferencesGUI::exportLocationDialog(this);
-		exportLabel->setText(truncatePath(prefs.value("Default Export Location").toString()));
+		this->exportLabel->setText(truncatePath(prefs.value("Default Export Location").toString()));
 	}
 
 	/**

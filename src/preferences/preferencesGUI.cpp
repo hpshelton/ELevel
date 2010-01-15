@@ -4,7 +4,6 @@
  * January 14, 2010
  */
 #include "preferencesGUI.h"
-#include <iostream>
 
 /**
  * Initializes a <code>PreferenceWindow</code> with the given parent
@@ -89,14 +88,14 @@ void PreferencesGUI::exportLocationDialog(QWidget* parent, QString text)
  */
 QString PreferencesGUI::truncatePath(QString path)
 {
+//	TODO: Truncation still needs work
 	QString s = path;
-	if(s.length() > 15)
+	if(s.length() > 35)
 	{
-		if(s.endsWith("/"))
-			s = s.left(s.length() - 1);
-		QString end = (s.left(s.lastIndexOf("/"))).right(s.length() - s.lastIndexOf("/"));
-		QString start = s.left(s.right(s.length() - 1).indexOf("/") + 2);
-		s = start + "..." + end;
+		QStringList list = s.split("/", QString::SkipEmptyParts);
+		QString end = list.at(list.length() - 1);
+		QString start = list.at(0);
+		s = start + "/.../" + end;
 	}
 	return s;
 }
@@ -122,8 +121,9 @@ QWidget* PreferencesGUI::createProgramPreferences()
 	layout->addWidget(openPrevious, 2, 0);
 
 	// Add text for default export location
-	this->exportLabel = new QLabel(truncatePath(this->prefs.value("Default Export Location").toString()));
+	this->exportLabel = new QLabel();
 	layout->addWidget(this->exportLabel, 3, 0, Qt::AlignLeft);
+	this->exportLabel->setText(truncatePath(this->prefs.value("Default Export Location").toString()));
 
 	// Add button for default export location
 	QPushButton* b = new QPushButton(tr("Change Export Location"), this);
@@ -157,7 +157,7 @@ QWidget* PreferencesGUI::createTestingPreferences()
 
 	// Add checkbox for allow hints
 	QCheckBox* showHints = new QCheckBox(tr("Show hints"));
-	showHints->setChecked(prefs.value("Show hints", true).toBool());
+	showHints->setChecked(prefs.value("Show Hints", true).toBool());
 	QObject::connect(showHints, SIGNAL(clicked(bool)), &(this->prefs), SLOT(setShowHints(bool)));
 	layout->addWidget(showHints, 3, 0, Qt::AlignTop);
 
