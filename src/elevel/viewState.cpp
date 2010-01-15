@@ -89,7 +89,7 @@ void ViewState::shuffleCurrentDeck()
  */
 void ViewState::renameCurrentDeck(QString name)
 {
-	if(this->currentDeck != NULL && name != NULL && !name.isEmpty() && name != "")
+	if(this->currentDeck != NULL && !name.isEmpty())
 	{
 		this->currentDeck->setHasChanged(true);
 		this->currentDeck->setName(name);
@@ -184,7 +184,7 @@ void ViewState::removeCurrentCard()
  */
 void ViewState::renameCurrentCard(QString newTitle)
 {
-	if(this->currentCard != NULL && newTitle != NULL && newTitle != "" && !newTitle.isEmpty())
+	if(this->currentCard != NULL && !newTitle.isEmpty())
 	{
 		this->currentDeck->setHasChanged(true);
 		this->currentDeck->setName(newTitle);

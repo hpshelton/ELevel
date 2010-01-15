@@ -31,6 +31,7 @@
 #include "cardAreaGUI.h"
 #include "deck.h"
 #include "defines.h"
+#include "preferencesGUI.h"
 
 /**
  * Main window that calls the other subunits for the program.

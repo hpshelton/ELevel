@@ -11,6 +11,7 @@ INCLUDEPATH += . \
 	src/dataModel \
 	src/editCard \
 	src/elevel/ \
+	src/preferences/ \
 	src/
 OBJECTS_DIR = ./obj
 MOC_DIR = ./obj
@@ -27,7 +28,10 @@ HEADERS += src/defines.h \
 	src/elevel/mainWindow.h \
 	src/elevel/viewState.h \
 	src/elevel/cardAreaGUI.h \
-	src/elevel/splashScreen.h
+	src/elevel/splashScreen.h \
+	src/preferences/preferences.h \
+	src/preferences/algorithm.h \
+	src/preferences/preferencesGUI.h
 SOURCES += src/dataModel/card.cpp \
 	src/dataModel/cardSection.cpp \
 	src/dataModel/deck.cpp \
@@ -37,9 +41,8 @@ SOURCES += src/dataModel/card.cpp \
 	src/elevel/viewState.cpp \
 	src/editCard/drawingGraphicsView.cpp \
 	src/elevel/cardAreaGUI.cpp \
-	src/elevel/splashScreen.cpp
+	src/elevel/splashScreen.cpp \
+	src/preferences/preferences.cpp \
+	src/preferences/preferencesGUI.cpp
 RESOURCES += src/ELevel.qrc
-
-macx{
-  ICON = images/icon.icns
-}
+macx:ICON = images/icon.icns

@@ -346,7 +346,7 @@ void MainWindow::openDeck()
 void MainWindow::saveDeck()
 {
 	QString filepath = ViewState::Instance()->getCurrentDeck()->getDiskLocation();
-	if(filepath == NULL || filepath == "" || filepath.isEmpty())
+	if(filepath.isEmpty())
 		saveDeckAs();
 //	else
 //		ViewState::Instance()->getCurrentDeck().writeToDisk(filepath);
@@ -463,8 +463,8 @@ void MainWindow::printCurrentDeck()
  */
 void MainWindow::setPreferences()
 {
-//	PreferenceWindow preferences(this);
-//	preferences.exec();
+	PreferencesGUI preferences(this);
+	preferences.exec();
 }
 
 /**
