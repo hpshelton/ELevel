@@ -147,3 +147,66 @@ void Card::setOptions(QMap<QString, bool> p)
 //    b.append("-----\n");
 //    return b.toString();
 //}
+
+Card* Card::readFromDisk(QXmlStreamReader* reader)
+{
+	Q_ASSERT(reader->isStartElement() && reader->name() == "Card");
+
+	QString title = reader->attributes().value("title").toString();
+	int ID = reader->attributes().value("id").toString().toInt();
+
+	reader->readNextStartElement();
+	Q_ASSERT(reader->isStartElement() && reader->name() == "options");
+	QMap<QString, bool> map;
+	foreach(QXmlStreamAttribute a, reader->attributes())
+		map.insert(a.name().toString(), (a.value().toString() == "1"));
+
+	reader->readNextStartElement();
+	Q_ASSERT(reader->isStartElement() && reader->name() == "question");
+	CardSection* question = CardSection::readFromDisk(reader);
+
+	reader->readNextStartElement();
+	Q_ASSERT(reader->isStartElement() && reader->name() == "answer");
+	CardSection* answer = CardSection::readFromDisk(reader);
+
+	reader->readNextStartElement();
+	Q_ASSERT(reader->isStartElement() && reader->name() == "hint");
+	CardSection* hint = CardSection::readFromDisk(reader);
+
+	reader->readNextStartElement();
+	Q_ASSERT(reader->isStartElement() && reader->name() == "additionalInfo");
+	CardSection* additionalInfo = CardSection::readFromDisk(reader);
+
+	Card* card = new Card(question, answer, hint, additionalInfo);
+	card->setTitle(title);
+	card->ID = ID;
+	return card;
+}
+
+void Card::writeToDisk(Card* card, QXmlStreamWriter* writer)
+{
+	writer->writeStartElement("Card");
+	writer->writeAttribute("title", card->getTitle());
+	writer->writeAttribute("id", QString("%1").arg(card->getID()));
+
+	writer->writeStartElement("options");
+	foreach(QString k, card->options.keys())
+		writer->writeAttribute(k, QString("%1").arg(card->options.value(k)));
+	writer->writeEndElement();
+
+	writer->writeStartElement("question");
+	CardSection::writeToDisk(card->getQuestion(), writer);
+	writer->writeEndElement();
+
+	writer->writeStartElement("answer");
+	CardSection::writeToDisk(card->getAnswer(), writer);
+	writer->writeEndElement();
+
+	writer->writeStartElement("hint");
+	CardSection::writeToDisk(card->getHint(), writer);
+	writer->writeEndElement();
+
+	writer->writeStartElement("additionalInfo");
+	CardSection::writeToDisk(card->getAdditionalInfo(), writer);
+	writer->writeEndElement();
+}

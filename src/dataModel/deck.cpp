@@ -261,10 +261,10 @@ Deck* Deck::readFromDisk(QString filepath)
 			deck->setName(reader.attributes().value("deckname").toString());
 			deck->cardIdIterator = reader.attributes().value("cardiditerator").toString().toInt();
 		}
-		else if(reader.name() == "Card");
-			// deck->addCard(Card::readFromDisk(reader));
+		else if(reader.name() == "Card")
+				deck->addCard(Card::readFromDisk(&reader));
 		else if(reader.name() == "Test Statistic");
-			// deck->addCard(TestStat::readFromDisk(reader));
+			// deck->addCard(TestStat::readFromDisk(&reader));
 		else
 		{
 			// Error
@@ -305,8 +305,8 @@ void Deck::writeToDisk(Deck* d)
 	writer.writeAttribute("deckname", d->getName());
 	writer.writeAttribute("cardiditerator", QString("%1").arg(d->cardIdIterator));
 	writer.writeEndElement();
-//	foreach(Card* c, d->getCards())
-//		Card::writeToDisk(c);
+	foreach(Card* c, d->getCards())
+		Card::writeToDisk(c, &writer);
 //	foreach(TestStat* t, d->getTestStatistics())
 //		TestStat::writeToDisk(t);
 	writer.writeEndDocument();

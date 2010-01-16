@@ -9,6 +9,8 @@
 #include <QString>
 #include <QGraphicsItem>
 #include <QList>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 
 #include "drawingGraphicsScene.h"
 #include "drawingGraphicsView.h"
@@ -129,6 +131,9 @@ public:
 	{
 		return *(this->image);
 	}
+
+	static void writeToDisk(CardSection* section, QXmlStreamWriter* writer);
+	static CardSection* readFromDisk(QXmlStreamReader* reader);
 
 private:
 	void init();

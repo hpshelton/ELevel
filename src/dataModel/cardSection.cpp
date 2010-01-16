@@ -88,9 +88,7 @@ void CardSection::setScene(DrawingGraphicsScene* s)
 			this->image = (new DrawingGraphicsView(scene))->getImage();
 		}
 		else
-		{
 			init();
-		}
 	}
 	else
 	{
@@ -110,8 +108,17 @@ void CardSection::setScene(DrawingGraphicsScene* s)
 //        return this->scene->toString();
 //}
 
-//private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
-//{
-//	in.defaultReadObject();
-//	this.image = new DrawingGraphicsView(scene).getImage();
-//}
+CardSection* CardSection::readFromDisk(QXmlStreamReader* reader)
+{
+	Q_ASSERT(reader->isStartElement() && reader->name() == "CardSection");
+	reader->readNextStartElement();
+	Q_ASSERT(reader->isStartElement() && reader->name() == "scene");
+	return new CardSection(DrawingGraphicsScene::readFromDisk(reader));
+}
+
+void CardSection::writeToDisk(CardSection* section, QXmlStreamWriter* writer)
+{
+	writer->writeStartElement("CardSection");
+	DrawingGraphicsScene::writeToDisk(section->getScene(), writer);
+	writer->writeEndElement();
+}

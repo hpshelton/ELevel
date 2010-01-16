@@ -8,9 +8,11 @@
 
 #include <QMap>
 #include <QString>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
 
-#include "CardSection.h"
-#include "DrawingGraphicsScene.h"
+#include "cardSection.h"
+#include "drawingGraphicsScene.h"
 
 /**
  * <code>Card</code> represents the high-level intuition of a flash card. <code>Card</code> represents a single card in
@@ -280,6 +282,9 @@ public:
 	 * Returns a <code>QString</code> representation of this <code>Card</code>
 	 */
 	// QString toString();
+
+	static Card* readFromDisk(QXmlStreamReader* reader);
+	static void writeToDisk(Card* card, QXmlStreamWriter* writer);
 
 private:
 	void init();

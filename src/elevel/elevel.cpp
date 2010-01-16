@@ -49,8 +49,8 @@ int main(int argc, char** argv)
 		splashScreen->raise();
 	}
 
-	mainWindow.showNormal();
 	mainWindow.raise();
+	mainWindow.showNormal();
 
 	return elevel.exec();
 };

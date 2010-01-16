@@ -11,7 +11,6 @@
 MainWindow::MainWindow(QList<QString> open)
 	: QMainWindow()
 {
-	Deck firstDeck;
 	Preferences prefs;
 
 	if(prefs.value("Open Previous").toBool())
@@ -40,6 +39,9 @@ MainWindow::MainWindow(QList<QString> open)
 		ViewState::Instance().setCurrentDeck(currentDeck);
 		//treeView->selectDeck(currentDeck, NULL);
 	}
+
+	ViewState::Instance().addDeck(new Deck("Happy"));
+	this->newCard();
 }
 
 /**
@@ -458,7 +460,7 @@ void MainWindow::setPreferences()
  */
 void MainWindow::newCard()
 {
-	ViewState::Instance().addCard(new Card());
+	ViewState::Instance().addCard(new Card(new CardSection(), new CardSection(), new CardSection(), new CardSection()));
 	editCard();
 }
 
