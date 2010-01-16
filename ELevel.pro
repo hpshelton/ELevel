@@ -45,6 +45,7 @@ SOURCES += src/dataModel/card.cpp \
     src/elevel/splashScreen.cpp \
     src/preferences/preferences.cpp \
     src/preferences/preferencesGUI.cpp \
-    src/elevel/deckDialog.cpp
+    src/elevel/deckDialog.cpp \
+    src/editCard/drawingGraphicsScene.cpp
 RESOURCES += src/ELevel.qrc
 macx:ICON = images/icon.icns
