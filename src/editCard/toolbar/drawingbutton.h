@@ -11,5 +11,7 @@
 class DrawingButton
 {
 public:
-	virtual DrawingItem getType();
+	virtual DrawingItem* getType() = 0;
 };
+
+#endif //DRAWINGBUTTON_H
