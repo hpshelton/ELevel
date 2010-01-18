@@ -75,8 +75,8 @@ void DrawingGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 		emit drawMousePress(event);
 		if(this->selectMode)
 			if(QGraphicsScene::itemAt(event->scenePos()) != NULL)
-				foreach(QGraphicsItem* i, QGraphicsScene::selectedItems())
-					i->mousePressEvent(event);
+				foreach(QGraphicsItem* i, QGraphicsScene::selectedItems());
+//					i->mousePressEvent(event);
 		QGraphicsScene::mousePressEvent(event);
 	}
 	update();
@@ -101,8 +101,8 @@ void DrawingGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
 	emit drawMouseHold(event);
 	if(this->selectMode)
-		foreach(QGraphicsItem* i, QGraphicsScene::selectedItems())
-			i->mouseMoveEvent(event);
+		foreach(QGraphicsItem* i, QGraphicsScene::selectedItems());
+//			i->mouseMoveEvent(event);
 	QGraphicsScene::mouseMoveEvent(event);
 }
 
@@ -113,8 +113,8 @@ void DrawingGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
 	emit drawMouseRelease(event);
 	if(this->selectMode)
-		foreach(QGraphicsItem* i, QGraphicsScene::selectedItems())
-			i->mouseReleaseEvent(event);
+		foreach(QGraphicsItem* i, QGraphicsScene::selectedItems());
+//			i->mouseReleaseEvent(event);
 	QGraphicsScene::mouseReleaseEvent(event);
 	update();
 }
@@ -125,8 +125,8 @@ void DrawingGraphicsScene::keyPressEvent(QKeyEvent* event)
 		if(event->key() == Qt::Key_Delete)
 			this->removeSelected();
 
-	foreach(QGraphicsItem* i, QGraphicsScene::selectedItems())
-		i->keyPressEvent(event);
+	foreach(QGraphicsItem* i, QGraphicsScene::selectedItems());
+//		i->keyPressEvent(event);
 
 //	if(this->drawingItem != NULL)
 //		this->drawingItem->keyPressEvent(event);
@@ -135,8 +135,8 @@ void DrawingGraphicsScene::keyPressEvent(QKeyEvent* event)
 
 void DrawingGraphicsScene::keyReleaseEvent(QKeyEvent* event)
 {
-	foreach(QGraphicsItem* i, QGraphicsScene::selectedItems())
-		i->keyReleaseEvent(event);
+	foreach(QGraphicsItem* i, QGraphicsScene::selectedItems());
+//		i->keyReleaseEvent(event);
 
 //	if(this->drawingItem != NULL)
 //		this->drawingItem->keyReleaseEvent(event);

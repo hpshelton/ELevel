@@ -1,5 +1,5 @@
 /**
- * DrawingGraphicsView.cpp
+ * drawingGraphicsView.cpp
  * E-Level
  * January 12, 2010
  */

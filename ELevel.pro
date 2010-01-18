@@ -32,7 +32,10 @@ HEADERS += src/defines.h \
     src/preferences/preferences.h \
     src/preferences/algorithm.h \
     src/preferences/preferencesGUI.h \
-    src/elevel/deckDialog.h
+    src/elevel/deckDialog.h \
+    src/editCard/editCardWindow.h \
+    src/elevel/deckTreeModel.h \
+    src/elevel/deckTreeGUI.h
 SOURCES += src/dataModel/card.cpp \
     src/dataModel/cardSection.cpp \
     src/dataModel/deck.cpp \
@@ -46,6 +49,9 @@ SOURCES += src/dataModel/card.cpp \
     src/preferences/preferences.cpp \
     src/preferences/preferencesGUI.cpp \
     src/elevel/deckDialog.cpp \
-    src/editCard/drawingGraphicsScene.cpp
+    src/editCard/drawingGraphicsScene.cpp \
+    src/editCard/editCardWindow.cpp \
+    src/elevel/deckTreeModel.cpp \
+    src/elevel/deckTreeGUI.cpp
 RESOURCES += src/ELevel.qrc
 macx:ICON = images/icon.icns

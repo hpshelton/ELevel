@@ -1,5 +1,5 @@
 /**
- * DrawingGraphicsView.h
+ * drawingGraphicsView.h
  * E-Level
  * January 12, 2010
  */
