@@ -10,6 +10,6 @@ DrawingToolButton::DrawingToolButton(QIcon i, DrawingItem* item)
 {
 	QToolButton::setIcon(i);
 	this->setCheckable(true);
-	//QObject::connect(this, SIGNAL(clicked()), this, SLOT(emitButton()));
+	QObject::connect(this, SIGNAL(clicked()), this, SLOT(emitType()));
 	this->item = item;
 }

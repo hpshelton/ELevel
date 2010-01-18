@@ -38,13 +38,10 @@ public:
 
 signals:
 	/** Signal emitted when the button is pressed, containing the button itself */
-	//void clicked(int type);
+	void clicked(DrawingToolButton*);
 
 private slots:
-//	void emitButton()
-//	{
-//		emit clicked(this);
-//	}
+	void emitType() { emit clicked(this); };
 };
 
 #endif // DRAWINGTOOLBUTTON_H
