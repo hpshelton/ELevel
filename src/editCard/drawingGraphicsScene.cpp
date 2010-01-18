@@ -11,7 +11,6 @@ DrawingGraphicsScene::DrawingGraphicsScene()
 	this->stack = new QUndoStack();
 	this->selectMode = false;
 
-	this->painter = new QPainter();
 	setPenColor(Qt::black);
 	setPenWidth(5);
 	QGraphicsScene::setFont(QFont("Times New Roman", 12, 50));
@@ -40,11 +39,7 @@ void DrawingGraphicsScene::centerText()
 void DrawingGraphicsScene::setPenColor(QColor newColor)
 {
 	if(newColor.isValid())
-	{
-		QPen pen = this->painter->pen();
-		pen.setColor(newColor);
-		this->painter->setPen(pen);
-	}
+		this->pen.setColor(newColor);
 }
 
 /**
@@ -56,11 +51,7 @@ void DrawingGraphicsScene::setPenColor(QColor newColor)
 void DrawingGraphicsScene::setPenWidth(int width)
 {
 	if(width > 0)
-	{
-		QPen pen = this->painter->pen();
-		pen.setWidth(width);
-		this->painter->setPen(pen);
-	}
+		this->pen.setWidth(width);
 }
 
 /**

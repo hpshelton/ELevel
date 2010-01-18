@@ -25,6 +25,8 @@
 #include <QClipboard>
 #include <QTextCursor>
 
+class DrawingItem;
+
 //#include "drawingItem.h"
 //#include "dragDropTextItem.h"
 
@@ -45,10 +47,11 @@ protected:
 	QUndoStack* stack;
 
 	/** The painter to draw shapes with */
-	QPainter* painter;
+	QPen pen;
+	QBrush brush;
 
 	/** The current drawing item */
-	//DrawingItem* drawingItem;
+	DrawingItem* drawingItem;
 
 	/**
 	 * Handles mousePress events. Emits signal that is there is a left button click to any listening object/method
@@ -82,7 +85,6 @@ protected:
 	 * Handle the drop event by importing any data contained in the <code>QGraphicsSceneDragDropEvent</code>
 	 */
 	void dropEvent(QGraphicsSceneDragDropEvent* event);
-
 
 	void focusInEvent(QFocusEvent* event);
 	void focusOutEvent(QFocusEvent* event);
@@ -121,8 +123,8 @@ public:
 	void centerText();
 
 	/** Get the current pen or brush */
-	QPen getPen() {	return this->painter->pen(); };
-	QBrush getBrush() { return this->painter->brush(); };
+	QPen getPen() {	return this->pen; };
+	QBrush getBrush() { return this->brush; };
 
 	/**
 	 * Set the color of the pen
