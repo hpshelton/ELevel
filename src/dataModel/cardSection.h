@@ -74,6 +74,7 @@ public:
 	 *         otherwise
 	 */
 	bool operator==(CardSection other);
+	bool operator!=(CardSection other) { return !( *this == other); };
 
 	/**
 	 * Returns the <code>CardSection</code>'s associated <code>DrawingGraphicsScene</code>

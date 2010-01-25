@@ -514,6 +514,7 @@ void MainWindow::editCard()
 	int screenCenterX = qdw.width() / 2;
 	int screenCenterY = qdw.height() / 2;
 	editGUI->setGeometry(screenCenterX - 400, screenCenterY - 300, 800, 600);
+	editGUI->setFocus(Qt::ActiveWindowFocusReason);
 	editGUI->show();
 }
 

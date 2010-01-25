@@ -4,6 +4,7 @@
  * December 27, 2009
  */
 #include "cardSection.h"
+#include <iostream>
 
 /**
  * Instantiates a <code>CardSection</code>
@@ -65,7 +66,7 @@ bool CardSection::operator==(CardSection other)
 		return false;
 	if(this->hasTextContent)
 		return this->text == other.getText();
-	return this->scene == other.getScene();
+	return this->scene->equals(other.getScene());
 }
 
 /**

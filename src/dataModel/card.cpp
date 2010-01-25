@@ -4,6 +4,7 @@
  * December 27, 2009
  */
 #include "card.h"
+#include <iostream>
 
 /**
  * Instantiates a <code>Card</code>
@@ -86,13 +87,13 @@ bool Card::operator==(Card other)
 {
 	if(this->title != other.getTitle())
 		return false;
-	if(this->question != other.getQuestion())
+	if(*(this->question) != *(other.getQuestion()))
 		return false;
-	if(this->answer != other.getAnswer())
+	if(*(this->answer) != *(other.getAnswer()))
 		return false;
-	if(this->hint != other.getHint())
+	if(*(this->hint) != *(other.getHint()))
 		return false;
-	if(this->additionalInfo != other.getAdditionalInfo())
+	if(*(this->additionalInfo) != *(other.getAdditionalInfo()))
 		return false;
 	if(this->options != other.getOptions())
 		return false;
@@ -113,7 +114,7 @@ void Card::setDefaultSettings()
  * Sets the <code>Card</code>'s options to the specified options
  *
  * @param p
- *        A <code>Map<std::string, Boolean> representing enabled and disabled options
+ *        A <code>QMap<QString, bool> representing enabled and disabled options
  */
 void Card::setOptions(QMap<QString, bool> p)
 {

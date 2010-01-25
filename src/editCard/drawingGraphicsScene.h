@@ -27,6 +27,8 @@
 
 class DrawingItem;
 
+#include <iostream>
+
 //#include "drawingItem.h"
 //#include "dragDropTextItem.h"
 
@@ -99,9 +101,19 @@ public:
 	 *        The other <code>DrawingGraphicsScene</code> to compare to
 	 * @return <code> true</code> if they are equal, false otherwise
 	 */
-	bool operator==(DrawingGraphicsScene* other)
+	bool equals(DrawingGraphicsScene* other)
 	{
-		return QGraphicsScene::items() == other->items();
+		QList<QGraphicsItem*> myItems = QGraphicsScene::items();
+		QList<QGraphicsItem*> theirItems = other->items();
+
+		if(myItems.size() != theirItems.size())
+			return false;
+		if(myItems.size() == 0 && theirItems.size() == 0)
+			return true;
+		for(int index = 0; index < myItems.size(); index++)
+			if(!(myItems.at(index) == theirItems.at(index)))
+				return false;
+		return true;
 	};
 
 	/**

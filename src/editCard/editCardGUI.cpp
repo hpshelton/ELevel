@@ -24,9 +24,9 @@ EditCardGUI::EditCardGUI(EditCardWindow* edit)
 	currentPen = new QPen();
 	currentBrush = new QBrush();
 
-	this->textToolbar = NULL;
-	this->drawingToolbar = NULL;
-	this->penToolBar = NULL;
+//	this->textToolbar = NULL;
+//	this->drawingToolbar = NULL;
+//	this->penToolBar = NULL;
 
 	// Setup the window for display
 	setupCard();
@@ -323,11 +323,11 @@ void EditCardGUI::initializeMenuToolbar()
 		this->addToolBar(Qt::TopToolBarArea, menuToolbar);
 	}
 
-	initializeTextToolbar();
-	initializePenToolbar();
+//	initializeTextToolbar();
+//	initializePenToolbar();
 
-	setFontFamily("Times New Roman");
-	setFontSize("12");
+//	setFontFamily("Times New Roman");
+//	setFontSize("12");
 
 	currentPen->setColor(Qt::black);
 	this->setPenWidth("" + currentPen->width());
