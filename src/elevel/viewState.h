@@ -89,6 +89,11 @@ public slots:
 	 */
 	void nextCard();
 
+	/**
+	 * Causes the current card to be refreshed. Called when the current card is changed.
+	 */
+	void refreshCurrentCard();
+
 public:
 	/** The single instance of this class */
 	static ViewState& Instance()
@@ -208,12 +213,6 @@ public:
 	 * @param newTitle
 	 */
 	void renameCurrentCard(QString newTitle);
-
-	/**
-	 * Causes the current card to be refreshed. Called when
-	 * the current card is changed.
-	 */
-	void refreshCurrentCard();
 };
 
 #endif // VIEWSTATE_H

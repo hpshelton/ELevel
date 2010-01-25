@@ -21,7 +21,7 @@
  * @param p
  *        preferences
  */
-void EditCardWindow::save(DrawingGraphicsScene* q, DrawingGraphicsScene* a, QString h, QString i, QString t, QMap<QString, bool> o)
+void EditCardWindow::save(DrawingGraphicsScene* q, DrawingGraphicsScene* a, QString h, QString i, QString t)
 {
 	q->unselectAll(false);
 	a->unselectAll(false);
@@ -34,7 +34,7 @@ void EditCardWindow::save(DrawingGraphicsScene* q, DrawingGraphicsScene* a, QStr
 	this->card->setHint(h);
 	this->card->setAdditionalInfo(i);
 	this->card->setTitle(t);
-	this->card->setOptions(o);
+	this->card->setOptions(this->prefs);
 	this->newCard = false;
 	ViewState::Instance().getCurrentDeck()->setHasChanged(true);
 }

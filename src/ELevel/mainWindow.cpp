@@ -4,6 +4,7 @@
  * December 29, 2009
  */
 #include "mainWindow.h"
+#include <iostream>
 
 /**
  * Initializes a new MainWindow
@@ -40,8 +41,8 @@ MainWindow::MainWindow(QList<QString> open)
 		//treeView->selectDeck(currentDeck, NULL);
 	}
 
-	ViewState::Instance().addDeck(new Deck("Happy"));
-	this->newCard();
+//	ViewState::Instance().addDeck(new Deck("Test"));
+//	newCard();
 }
 
 /**
@@ -499,21 +500,21 @@ void MainWindow::renameCard()
  */
 void MainWindow::editCard()
 {
-//	Card c = state.getCurrentCard();
-//
-//	EditCardWindow edit(c);
-//	EditCardGUI editGUI(this, edit);
-//	editGUI.setWindowModality(Qt::WindowModal);
-//	editGUI.setWindowOpacity(1.0);
-//	editGUI.setWindowIcon(this->windowIcon());
-//	editGUI.setWindowTitle(tr("Edit Card"));
-//	QObject::connect(editGUI, SIGNAL(closing()), ViewState::Instance(), SLOT(refreshCurrentCard()));
-//
-//	QDesktopWidget qdw = new QDesktopWidget();
-//	int screenCenterX = qdw.width() / 2;
-//	int screenCenterY = qdw.height() / 2;
-//	editGUI.setGeometry(screenCenterX - 400, screenCenterY - 300, 800, 600);
-//	editGUI.show();
+	Card* c = ViewState::Instance().getCurrentCard();
+
+	EditCardWindow edit(c);
+	EditCardGUI* editGUI = new EditCardGUI(&edit);
+	editGUI->setWindowModality(Qt::WindowModal);
+	editGUI->setWindowOpacity(1.0);
+	editGUI->setWindowIcon(this->windowIcon());
+	editGUI->setWindowTitle(tr("Edit Card"));
+	QObject::connect(editGUI, SIGNAL(close()), &ViewState::Instance(), SLOT(refreshCurrentCard()));
+
+	QDesktopWidget qdw;
+	int screenCenterX = qdw.width() / 2;
+	int screenCenterY = qdw.height() / 2;
+	editGUI->setGeometry(screenCenterX - 400, screenCenterY - 300, 800, 600);
+	editGUI->show();
 }
 
 /**

@@ -117,11 +117,6 @@ public:
 		return this->selectMode;
 	};
 
-	/**
-	 * Center a single text box in the middle of the scene
-	 */
-	void centerText();
-
 	/** Get the current pen or brush */
 	QPen getPen() {	return this->pen; };
 	QBrush getBrush() { return this->brush; };
@@ -143,30 +138,12 @@ public:
 	void setPenWidth(int width);
 
 	/**
-	 * Undoes the last element on the stack
-	 */
-	void undo();
-
-	/**
-	 * Redoes the last element on the stack
-	*/
-	void redo();
-
-	/**
 	 * Set the font associated with the object and update all listening objects of the sent font
 	 *
 	 * @param font
 	 *        The <code>font</code> to be used for all drawing
 	 */
 	void updateFont(QFont font);
-
-	/**
-	 * Set the current type based on the button that was pressed. Connects the proper slots to those objects
-	 *
-	 * @param type
-	 *        the type of button item that was pressed
-	 */
-//	void setType(DrawingItem* type);
 
 	/**
 	 * Add a move event to the stack
@@ -188,7 +165,7 @@ public:
 	 * @param mimeData
 	 *        The <code>QMimeData</code> to add
 	 */
-	void paste(QMimeData* mimeData)
+	void paste(const QMimeData* mimeData)
 	{
 		importMimeData(mimeData, QPointF(0, 0));
 	};
@@ -196,12 +173,12 @@ public:
 	/**
 	 * Cut the currently selected item(s) onto the clipboard
 	 */
-	void cut(QClipboard clipboard);
+	void cut(QClipboard* clipboard);
 
 	/**
 	 * Copy the currently selected item(s) onto the clipboard
 	 */
-	void copy(QClipboard clipboard);
+	void copy(QClipboard* clipboard);
 
 	/**
 	 * Select all the items if in select mode
@@ -301,6 +278,29 @@ signals:
 	void fontChange(QFont);
 
 public slots:
+	/**
+	 * Center a single text box in the middle of the scene
+	 */
+	void centerText();
+
+	/**
+	 * Undoes the last element on the stack
+	 */
+	void undo();
+
+	/**
+	 * Redoes the last element on the stack
+	*/
+	void redo();
+
+	/**
+	 * Set the current type based on the button that was pressed. Connects the proper slots to those objects
+	 *
+	 * @param type
+	 *        the type of button item that was pressed
+	 */
+	void setType(DrawingItem* type);
+
 	/**
 	 * Removing a <code>DragDropTextItem</code> if there is no text in the box
 	 *

@@ -10,14 +10,14 @@
 #include <QIcon>
 
 #include "drawingItem.h"
-#include "drawingbutton.h"
+#include "drawingButton.h"
 
 /**
  * Button that has a DrawingType
  *
  * @author Jesse Yates, H. Parker Shelton,
  */
-class DrawingToolButton : public QToolButton, DrawingButton
+class DrawingToolButton : public QToolButton, public DrawingButton
 {
 	Q_OBJECT
 

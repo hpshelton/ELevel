@@ -212,10 +212,10 @@ void DrawingGraphicsScene::updateFont(QFont font)
  * @param type
  *        the type of button item that was pressed
  */
-//void DrawingGraphicsScene::setType(DrawingItem* type)
-//{
-//	if(type == NULL)
-//		return;
+void DrawingGraphicsScene::setType(DrawingItem* type)
+{
+	if(type == NULL)
+		return;
 //
 //	QObject::disconnect(this, 0, this->drawingItem, 0); // Disconnect all slots
 //
@@ -228,7 +228,7 @@ void DrawingGraphicsScene::updateFont(QFont font)
 //	QObject::connect(this, SIGNAL(drawMouseHold(QGraphicsSceneMouseEvent*)), this->drawingItem, SLOT(mouseMoveEvent(QGraphicsSceneMouseEvent*)));
 //	QObject::connect(this, SIGNAL(drawMouseRelease(QGraphicsSceneMouseEvent*)), this->drawingItem, SLOT(mouseReleaseEvent(QGraphicsSceneMouseEvent*)));
 //	QObject::connect(this->drawingItem, SIGNAL(eventItem(DragDropItem*)), this, SLOT(addDrawEvent(DragDropItem*)));
-//}
+}
 
 /**
  * Add an event to the stack
@@ -348,7 +348,7 @@ void DrawingGraphicsScene::addPixmaptoScene(QPixmap* p, QPointF pos)
 /**
  * Cut the currently selected item(s) onto the clipboard
  */
-void DrawingGraphicsScene::cut(QClipboard clipboard)
+void DrawingGraphicsScene::cut(QClipboard* clipboard)
 {
 	if(!this->selectMode)
 		return;
@@ -368,7 +368,7 @@ void DrawingGraphicsScene::cut(QClipboard clipboard)
 /**
  * Copy the currently selected item(s) onto the clipboard
  */
-void DrawingGraphicsScene::copy(QClipboard clipboard)
+void DrawingGraphicsScene::copy(QClipboard* clipboard)
 {
 	if(!this->selectMode)
 		return;

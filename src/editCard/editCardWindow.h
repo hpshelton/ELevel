@@ -18,12 +18,15 @@
  *
  * @author Jesse Yates, H. Parker Shelton
  */
-class EditCardWindow
+class EditCardWindow : public QObject
 {
+	Q_OBJECT
+
 private:
 	/** The <code>Card</code> currently being edited */
 	Card* card;
 	bool newCard;
+	QMap<QString, bool> prefs;
 
 	/**
 	 * Set the <code>Card</code> being currently edited to the specified {@link Card}
@@ -32,6 +35,7 @@ private:
 	 *        a <code>Card</code> representing the card currently being edited
 	 */
 	void setCard(Card* c);
+
 public:
 	/**
 	 * Constructor for the editCard model
@@ -54,6 +58,11 @@ public:
 		return card;
 	};
 
+	QMap<QString, bool> getPreferences()
+	{
+		return prefs;
+	};
+
 	/**
 	 * Saves a new card to the deck with the properties passed in
 	 *
@@ -70,7 +79,7 @@ public:
 	 * @param p
 	 *        preferences
 	 */
-	void save(DrawingGraphicsScene* q, DrawingGraphicsScene* a, QString h, QString i, QString t, QMap<QString, bool> o);
+	void save(DrawingGraphicsScene* q, DrawingGraphicsScene* a, QString h, QString i, QString t);
 
 	/**
 	 * Revert all changes to the card
@@ -86,6 +95,13 @@ public:
 	{
 		return this->newCard;
 	};
+
+	bool isSelfCheck() { return this->card->getSetting("Self-Check"); };
+	bool showHints() { return this->card->getSetting("Show Hints"); };
+
+public slots:
+	void setShowHints(bool b) { prefs.insert("Show Hints", b); };
+	void setSelfCheck(bool b) { prefs.insert("Self-Check", b); };
 };
 
 #endif // EDITCARDWINDOW_H

@@ -172,6 +172,8 @@ public:
 		return this->title;
 	}
 
+	bool getSetting(QString key) { return this->options.value(key); };
+
 	/**
 	 * Sets the additional information associated with this <code>Card</code> to the specified
 	 * <code>DrawingGraphicsScene</code>

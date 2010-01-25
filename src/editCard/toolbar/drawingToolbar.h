@@ -26,7 +26,7 @@ private:
 	DrawingToolButton* currentlyClicked;
 
 public:
-	DrawingToolbar();
+	DrawingToolbar(QWidget* parent = 0) : QToolBar(parent) {};
 
 	/** Adds a DrawingToolButton to the DrawingToolbar */
 	void addButton(DrawingToolButton* b);

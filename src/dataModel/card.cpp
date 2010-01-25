@@ -209,4 +209,6 @@ void Card::writeToDisk(Card* card, QXmlStreamWriter* writer)
 	writer->writeStartElement("additionalInfo");
 	CardSection::writeToDisk(card->getAdditionalInfo(), writer);
 	writer->writeEndElement();
+
+	writer->writeEndElement();
 }

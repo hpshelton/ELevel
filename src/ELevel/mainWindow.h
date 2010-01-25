@@ -21,6 +21,7 @@
 #include <QPainter>
 #include <QFileDialog>
 #include <QDateTime>
+#include <QDesktopWidget>
 
 #include "viewState.h"
 //#include "deckTreeGUI.h"
@@ -30,6 +31,8 @@
 #include "defines.h"
 #include "preferencesGUI.h"
 #include "deckDialog.h"
+#include "editCardWindow.h"
+#include "editCardGUI.h"
 
 /**
  * Main window that calls the other subunits for the program.
