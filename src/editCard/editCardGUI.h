@@ -32,6 +32,7 @@
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QColorDialog>
+#include <QTextEdit>
 
 #include "editCardWindow.h"
 #include "drawingGraphicsScene.h"
@@ -39,6 +40,7 @@
 #include "drawingToolbar.h"
 #include "drawingToolButton.h"
 #include "viewState.h"
+#include "clearingTextBox.h"
 
 class MainWindow;
 
@@ -145,7 +147,7 @@ protected:
 	EditCardWindow* editWindow;
 
 	/** The card title */
-	//ClearingTextBox* title;
+	ClearingTextBox* title;
 
 	/** The question in displayable format */
 	DrawingGraphicsView* question;
@@ -156,10 +158,10 @@ protected:
 	DrawingGraphicsScene* answerModel;
 
 	/** The hint in displayable format */
-	//FocusingTextEdit* hint;
+	QTextEdit* hint;
 
 	/** The hint in displayable format */
-	//FocusingTextEdit* addInfo;
+	QTextEdit* addInfo;
 
 	/** The toolbar for the general menu buttons */
 	QToolBar* menuToolbar;

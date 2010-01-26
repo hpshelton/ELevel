@@ -246,12 +246,12 @@ void MainWindow::toggleActions(Card* currentCard)
 	printAction->setEnabled(deckEnabled);
 	graphAction->setEnabled(deckEnabled);
 
-	newCardAction->setEnabled(cardEnabled);
+	//newCardAction->setEnabled(cardEnabled);
 	closeDeckAction->setEnabled(cardEnabled);
 
 	if(currentCard == NULL)
 	{
-		editCardAction->setEnabled(false);
+	//	editCardAction->setEnabled(false);
 		deleteCardAction->setEnabled(false);
 		duplicateCardAction->setEnabled(false);
 		renameCardAction->setEnabled(false);

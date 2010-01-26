@@ -151,7 +151,7 @@ void EditCardGUI::setupEditArea()
 	settingsLayout->addSpacerItem(new QSpacerItem(10, 0));
 	settingsLayout->addWidget(selfCheck);
 
-//	layout->addWidget(this->title, 1, Qt::AlignCenter);
+	layout->addWidget(this->title, 1, Qt::AlignCenter);
 	layout->addLayout(cardLayout);
 
 	cardLayout->setColumnMinimumWidth(0, CARD_WIDTH);
@@ -174,10 +174,10 @@ void EditCardGUI::setupEditArea()
 	cardLayout->addWidget(this->centerAnswer, 3, 1, Qt::AlignRight);
 
 	cardLayout->addWidget(new QLabel("Additional Information"), 4, 0, Qt::AlignCenter);
-//	cardLayout->addWidget(this->addInfo, 5, 0);
+	cardLayout->addWidget(this->addInfo, 5, 0);
 
 	cardLayout->addWidget(new QLabel("Hint"), 4, 1, Qt::AlignCenter);
-//	cardLayout->addWidget(this->hint, 5, 1);
+	cardLayout->addWidget(this->hint, 5, 1);
 
 	cardLayout->addLayout(settingsLayout, 6, 0, 1, 2, Qt::AlignCenter);
 
@@ -268,21 +268,21 @@ void EditCardGUI::setupCard()
 	this->answer->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	this->answer->setGeometry(0, 0, CARD_WIDTH, CARD_HEIGHT);
 
-//	this->hint = new FocusingTextEdit(hintSection->getText());
-//	this->hint->setMinimumHeight(20);
-//	this->hint->setTabChangesFocus(true);
+	this->hint = new QTextEdit(hintSection->getText());
+	this->hint->setMinimumHeight(20);
+	this->hint->setTabChangesFocus(true);
 
-//	this->addInfo = new FocusingTextEdit(addInfoSection->getText());
-//	this->addInfo->setMinimumHeight(20);
-//	this->addInfo->setTabChangesFocus(true);
+	this->addInfo = new QTextEdit(addInfoSection->getText());
+	this->addInfo->setMinimumHeight(20);
+	this->addInfo->setTabChangesFocus(true);
 
 	QString title = currentCard->getTitle();
-//	this->title = new ClearingTextBox("New Card");
-//	if(!title.isEmpty())
-//		this->title->setText(title);
+	this->title = new ClearingTextBox("New Card");
+	if(!title.isEmpty())
+		this->title->setText(title);
 
-//	this->title->setAlignment(Qt::AlignCenter);
-//	this->title->setMaximumHeight(30);
+	this->title->setAlignment(Qt::AlignCenter);
+	this->title->setMaximumHeight(30);
 }
 
 /**
@@ -440,7 +440,7 @@ bool EditCardGUI::displaySavePrompt()
 bool EditCardGUI::maybeSave()
 {
 	Card* card = this->editWindow->getCard();
-//	if(this->editWindow->isNewCard() || card->getQuestion()->getScene()->isModified() || card->getAnswer()->getScene()->isModified() || card->getHint()->getText() != this->hint->toPlainText() || card->getAdditionalInfo()->getText() != this->addInfo->toPlainText() || card->getTitle() != this->title->displayText())
+	if(this->editWindow->isNewCard() || card->getQuestion()->getScene()->isModified() || card->getAnswer()->getScene()->isModified() || card->getHint()->getText() != this->hint->toPlainText() || card->getAdditionalInfo()->getText() != this->addInfo->toPlainText() || card->getTitle() != this->title->displayText())
 		return displaySavePrompt();
 	foreach(QString s, this->editWindow->getPreferences().keys())
 	{
@@ -455,10 +455,10 @@ bool EditCardGUI::maybeSave()
  */
 void EditCardGUI::saveCard()
 {
-//	if(this->title->text().isEmpty())
-//		this->editWindow->save(this->questionModel, this->answerModel, this->hint->toPlainText(), this->addInfo->toPlainText(), "New Card");
-//	else
-//		this->editWindow->save(this->questionModel, this->answerModel, this->hint->toPlainText(), this->addInfo->toPlainText(), this->title->text());
+	if(this->title->text().isEmpty())
+		this->editWindow->save(this->questionModel, this->answerModel, this->hint->toPlainText(), this->addInfo->toPlainText(), "New Card");
+	else
+		this->editWindow->save(this->questionModel, this->answerModel, this->hint->toPlainText(), this->addInfo->toPlainText(), this->title->text());
 
 	ViewState::Instance().refreshCurrentCard();
 }

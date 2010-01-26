@@ -41,7 +41,8 @@ HEADERS += src/defines.h \
 	src/editCard/drawingItems/dragDropItem.h \
 	src/editCard/toolbar/drawingToolButton.h \
 	src/editCard/toolbar/drawingToolbar.h \
-	src/editCard/editCardGUI.h
+	src/editCard/editCardGUI.h \
+	src/elevel/clearingTextBox.h
 SOURCES += src/dataModel/card.cpp \
 	src/dataModel/cardSection.cpp \
 	src/dataModel/deck.cpp \
@@ -62,5 +63,4 @@ SOURCES += src/dataModel/card.cpp \
 	src/editCard/toolbar/drawingToolbar.cpp \
 	src/editCard/editCardGUI.cpp
 RESOURCES += src/ELevel.qrc
-
 macx:ICON = images/icon.icns
