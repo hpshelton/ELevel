@@ -70,7 +70,6 @@ public:
 	 */
 	bool checkResizeArea(QPointF eventScene);
 
-
 	/**
 	 * update connected slots that the item has moved
 	 */
@@ -110,7 +109,13 @@ public:
 	/**
 	 * Copy this item
 	 */
-	DragDropItem* copy() { return new DragDropLine(this); };
+	DragDropItem* copy() { return dynamic_cast<DragDropItem*>(new DragDropLine(this)); };
+
+	/** set the current bursh used to draw the item */
+	void setBrush(QBrush brush) {};
+
+	/** set the current pen used to draw the item */
+	void setPen(QPen pen) { QGraphicsLineItem::setPen(pen); };
 
 	/**
 	 * Set the current line to the upper left and lower right corners of the rectangle
@@ -119,37 +124,40 @@ public:
 
 	void setScene(DrawingGraphicsScene* scene);
 
-//	/**
-//	 * Serializes the <code>DragDropItem</code> to file using the specified <code>QXmlStreamWriter</code>
-//	 *
-//	 * @param out
-//	 *        an <code>QXmlStreamWriter</code> used to serialize the scene
-//	 */
-//	static void writeToDisk(DragDropItem* scene, QXmlStreamWriter* writer)
-//	{
-////		DragDropUtilities.serializeQPen(super.pen(), out);
-////		out.writeObject(new double[]{super.line().x1(), super.line().y1(), super.line().x2(), super.line().y2(), super.zValue()});
-//	};
+	/**
+	 * Serializes the <code>DragDropLine</code> to file using the specified <code>QXmlStreamWriter</code>
+	 *
+	 * @param out
+	 *        an <code>QXmlStreamWriter</code> used to serialize the scene
+	 */
+	static void writeToDisk(DragDropLine* item, QXmlStreamWriter* writer)
+	{
+//		DragDropUtilities.serializeQPen(super.pen(), out);
+//		out.writeObject(new double[]{super.line().x1(), super.line().y1(), super.line().x2(), super.line().y2(), super.zValue()});
+	};
+
+	/**
+	 * Deserializes the <code>DragDropLine</code> from file using the specified <code>QXmlStreamReader</code>
+	 *
+	 * @param in
+	 *        an <code>QXmlStreamReader</code> used to deserialize the scene
+	 */
+	static DragDropLine* readFromDisk(QXmlStreamReader* reader)
+	{
+//		QPen pen = DragDropUtilities.deserializeQPen(in);
+//		this.setPen(pen);
 //
-//	/**
-//	 * Deserializes the <code>DragDropItem</code> from file using the specified <code>QXmlStreamReader</code>
-//	 *
-//	 * @param in
-//	 *        an <code>QXmlStreamReader</code> used to deserialize the scene
-//	 */
-//	static DragDropItem* readFromDisk(QXmlStreamReader* reader)
-//	{
-////		QPen pen = DragDropUtilities.deserializeQPen(in);
-////		this.setPen(pen);
-////
-////		double[] line = (double[]) in.readObject();
-////		super.setLine(line[0], line[1], line[2], line[3]);
-////		if(line.length > 4)
-////			this.setZValue(line[4]);
-////
-////		moveItem = new QSignalEmitter.Signal1<MoveItemCommand>();
-////		resizeItem = new QSignalEmitter.Signal1<ResizeItemCommand>();
-//	};
+//		double[] line = (double[]) in.readObject();
+//		super.setLine(line[0], line[1], line[2], line[3]);
+//		if(line.length > 4)
+//			this.setZValue(line[4]);
+//
+//		moveItem = new QSignalEmitter.Signal1<MoveItemCommand>();
+//		resizeItem = new QSignalEmitter.Signal1<ResizeItemCommand>();
+	};
+
+	QRectF boundingRect() const { QGraphicsLineItem::boundingRect(); };
+	void paint(QPainter* p, const QStyleOptionGraphicsItem* s, QWidget* w) { QGraphicsLineItem::paint(p, s, w); };
 
 signals:
 	/** signals linked to parent scene */

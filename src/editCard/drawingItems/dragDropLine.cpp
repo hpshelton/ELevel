@@ -9,8 +9,8 @@ DragDropLine::DragDropLine(QGraphicsLineItem* line)
 	: QGraphicsLineItem(line)
 {
 	//DragDropUtilities::setFlags(this);
-	DragDropItem::setPen(line->pen());
-	DragDropItem::setPos(line->pos());
+	setPen(line->pen());
+	QGraphicsLineItem::setPos(line->pos());
 }
 
 DragDropLine::DragDropLine(QLineF line)
@@ -131,7 +131,7 @@ bool DragDropLine::checkWasResized()
  */
 void DragDropLine::setRect(QRectF rect)
 {
-	this->oldLine = &QGraphicsLineItem::line();
+	this->oldLine = new QLineF(QGraphicsLineItem::line());
 	this->setLine(rect.topLeft().x(), rect.topLeft().y(), rect.bottomLeft().x(), rect.bottomLeft().y());
 	emitResize();
 }

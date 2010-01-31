@@ -14,8 +14,8 @@
  */
 void DrawingLineItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-	DrawingItem::item = new DragDropLine(new QLineF(event->scenePos(), event->scenePos()));
-	DrawingItem::item->setPen(new QPen(DrawingItem::pen.color(), DrawingItem::pen.widthF() / 3));
+	DrawingItem::item = new DragDropLine(QLineF(event->scenePos(), event->scenePos()));
+	DrawingItem::item->setPen(QPen(DrawingItem::pen.color(), DrawingItem::pen.widthF() / 3));
 	DrawingItem::mousePressEvent(event);
 	DrawingItem::scene->addItem(item);
 	event->accept();
