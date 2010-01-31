@@ -59,7 +59,7 @@ public:
 	//DrawingItem(const DrawingItem& other) : QWidget() { return copy(other.getScene()); };
 
 	/** Copy the item based on the scene */
-	virtual DrawingItem& copy(DrawingGraphicsScene* scene) = 0;
+	virtual DrawingItem* copy(DrawingGraphicsScene* scene) = 0;
 
 	/** Set the scene to sent scene */
 	void setScene(DrawingGraphicsScene* scene) { if(scene != NULL) this->scene = scene; };

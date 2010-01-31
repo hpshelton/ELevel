@@ -56,7 +56,7 @@ public:
 	virtual void syncSize();
 
 	/** copy the current object */
-	virtual DragDropItem& copy();
+	virtual DragDropItem* copy();
 
 	/** link the sent scene to the object, connecting necessary slots */
 	virtual void setScene(DrawingGraphicsScene* scene);
@@ -66,6 +66,22 @@ public:
 
 	/** Set the current rectangle */
 	virtual void setRect(QRectF rect);
+
+	/**
+	 * Serializes the <code>DragDropItem</code> to file using the specified <code>QXmlStreamWriter</code>
+	 *
+	 * @param out
+	 *        an <code>QXmlStreamWriter</code> used to serialize the scene
+	 */
+	virtual void writeToDisk(DragDropItem* scene, QXmlStreamWriter* writer);
+
+	/**
+	 * Deserializes the <code>DragDropItem</code> from file using the specified <code>QXmlStreamReader</code>
+	 *
+	 * @param in
+	 *        an <code>QXmlStreamReader</code> used to deserialize the scene
+	 */
+	virtual DragDropItem* readFromDisk(QXmlStreamReader* reader);
 };
 
 #endif // DRAGDROPITEM_H
