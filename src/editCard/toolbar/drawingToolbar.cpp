@@ -13,7 +13,7 @@ void DrawingToolbar::addButton(DrawingToolButton* b)
 		currentlyClicked = b;
 		currentlyClicked->setChecked(true);
 	}
-	QObject::connect(b, SIGNAL(clicked(DrawingItem*)), SLOT(changeType(DrawingItem*)));
+	QObject::connect(b, SIGNAL(clicked(DrawingToolButton*)), SLOT(changeType(DrawingToolButton*)));
 	this->addWidget(b);
 }
 

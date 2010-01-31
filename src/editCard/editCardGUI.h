@@ -41,6 +41,7 @@
 #include "drawingToolButton.h"
 #include "viewState.h"
 #include "clearingTextBox.h"
+#include "drawingLineItem.h"
 
 class MainWindow;
 

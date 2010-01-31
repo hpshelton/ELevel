@@ -349,9 +349,9 @@ void EditCardGUI::initializeDrawingToolbar()
 //		DrawingToolButton* text = new DrawingToolButton(QIcon(":/images/text.png"), new DrawingTextItem());
 //		text->setToolTip("Create and edit text");
 //		this->drawingToolbar->addButton(text);
-//		DrawingToolButton* line = new DrawingToolButton(QIcon(":/images/line.png"), new DrawingLineItem());
-//		line->setToolTip("Draw lines");
-//		this->drawingToolbar->addButton(line);
+		DrawingToolButton* line = new DrawingToolButton(QIcon(":/images/line.png"), new DrawingLineItem());
+		line->setToolTip("Draw lines");
+		this->drawingToolbar->addButton(line);
 //		DrawingToolButton* ellipse = new DrawingToolButton(QIcon(":/images/ellipse.png"), new DrawingEllipseItem());
 //		ellipse->setToolTip("Draw ellipses and circles");
 //		this->drawingToolbar->addButton(ellipse);
