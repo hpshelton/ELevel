@@ -112,14 +112,17 @@ void CardSection::setScene(DrawingGraphicsScene* s)
 CardSection* CardSection::readFromDisk(QXmlStreamReader* reader)
 {
 	Q_ASSERT(reader->isStartElement() && reader->name() == "CardSection");
+	CardSection* c = new CardSection(reader->attributes().value("text").toString());
 	reader->readNextStartElement();
 	Q_ASSERT(reader->isStartElement() && reader->name() == "scene");
-	return new CardSection(DrawingGraphicsScene::readFromDisk(reader));
+	c->setScene(DrawingGraphicsScene::readFromDisk(reader));
+	return c;
 }
 
 void CardSection::writeToDisk(CardSection* section, QXmlStreamWriter* writer)
 {
 	writer->writeStartElement("CardSection");
+	writer->writeAttribute("text", section->text);
 	DrawingGraphicsScene::writeToDisk(section->getScene(), writer);
 	writer->writeEndElement();
 }

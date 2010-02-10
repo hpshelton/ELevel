@@ -502,8 +502,8 @@ void MainWindow::editCard()
 {
 	Card* c = ViewState::Instance().getCurrentCard();
 
-	EditCardWindow edit(c);
-	EditCardGUI* editGUI = new EditCardGUI(&edit);
+	EditCardWindow* edit = new EditCardWindow(c);
+	EditCardGUI* editGUI = new EditCardGUI(edit);
 	editGUI->setWindowModality(Qt::WindowModal);
 	editGUI->setWindowOpacity(1.0);
 	editGUI->setWindowIcon(this->windowIcon());
