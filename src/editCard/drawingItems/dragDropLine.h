@@ -14,7 +14,7 @@
 #include "drawingGraphicsScene.h"
 //#include "moveItemCommand.h"
 //#include "resizeItemCommand.h"
-//#include "dragDropUtilities.h"
+#include "dragDropUtilities.h"
 
 /**
  * Line that can accept drag and drops
